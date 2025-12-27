@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="assets/icon_neu.png">
+        <title>Live Feedback</title>
+        <script>
+            function toggle() {
+                document.body.classList.toggle("light");
+            }
+        </script>
+    </head>
+    <body>
+        <div class="layout">
+            <main class="student">
+                <img src="assets/titel_logo_neu.png"> 
+                <div class="flex">
+                    <h1>FEEDBACK</h1>
+                    <button data-type="ok">👍<span>Verstanden</span></button>
+                    <button data-type="unsure">😐<span>Unsicher</span></button>
+                    <button data-type="fast">👎<span>Zu schnell</span></button>
+                    <button data-type="question">❓<span>Frage</span></button>
+                </div>
+                <p id="status"></p>
+            </main>
+        </div>
+    </body>
+</html>

@@ -34,9 +34,12 @@ body {
   min-height: 100vh;
 }
 
+.small-main{
+  max-width: 1000px;
+}
+
 main {
   padding: 2rem;
-  max-width: 1000px;
   margin: auto;
   margin-top: 6rem;
 }
@@ -198,7 +201,7 @@ button:active {
 
 .top-left-Titel {
   position: absolute;
-  top: 5rem;
+  top:6rem;
   left: 1em;
 }
 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="assets/icon_neu.png">
+        <title>Create Kurs</title>
+    </head>
+    <body>
+        <main class="small-main">
+            <header>
+                <img src="assets/titel_logo_neu.png" class="top-left">
+            </header>
+            <div>
+                <label class="top-left-Titel">NEUE UMFRAGE</label>
+                <label for="survey_name">Umfragen Titel</label>
+                <input type="text" name="Kursname" id="survey_name" class="textinput course-text" placeholder="Meine tolle Umfrage">
+                <label>Bewertungsart</label>
+                <fieldset style="display: flex; flex-wrap: wrap;">
+                    <div style="flex: 1 1 ; display: flex; flex-wrap: wrap;">
+                        <div style="flex: 1 1 width">
+                            <input type="radio" id="thumb" class="left-center">
+                        </div>
+                        <div style="flex: 1 2 width">
+                            <label for="thumb">Daumen hoch/runter</label>
+                        </div>
+                    </div>
+                    <div style="flex: 1 1; display: flex; flex-wrap: wrap;">
+                        <div style="flex: 1 1 width; ">
+                            <input type="radio" id="smiley" class="left-center">
+                        </div>
+                        <div style="flex: 1 2 width; ">
+                            <label for="smiley">Smiley</label>
+                        </div>
+                    </div>
+                    <div style="flex: 1 1 ; display: flex; flex-wrap: wrap;">
+                        <div style="flex: 1 1 width">
+                            <input type="radio" id="1-10-Points" class="left-center">
+                        </div>
+                        <div style="flex: 1 2 width">
+                            <label for="1-10-Points">1-10 Punkte</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <footer class="page-footer">
+                <button id="create_course" class="bottom-center">Kurs erstellen</button>
+            </footer>
+        </main>
+    </body>
+</html>

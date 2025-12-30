@@ -20,7 +20,7 @@
                 <fieldset style="display: flex; flex-wrap: wrap;">
                     <div style="flex: 1 1 ; display: flex; flex-wrap: wrap;">
                         <div style="flex: 1 1 width">
-                            <input type="radio" id="thumb" class="left-center">
+                            <input type="radio" id="thumb" name="rating_type" class="left-center">
                         </div>
                         <div style="flex: 1 2 width">
                             <label for="thumb">Daumen hoch/runter</label>
@@ -28,7 +28,7 @@
                     </div>
                     <div style="flex: 1 1; display: flex; flex-wrap: wrap;">
                         <div style="flex: 1 1 width; ">
-                            <input type="radio" id="smiley" class="left-center">
+                            <input type="radio" id="smiley" name="rating_type" class="left-center">
                         </div>
                         <div style="flex: 1 2 width; ">
                             <label for="smiley">Smiley</label>
@@ -36,17 +36,88 @@
                     </div>
                     <div style="flex: 1 1 ; display: flex; flex-wrap: wrap;">
                         <div style="flex: 1 1 width">
-                            <input type="radio" id="1-10-Points" class="left-center">
+                            <input type="radio" id="1-10-Points" name="rating_type" class="left-center">
                         </div>
                         <div style="flex: 1 2 width">
                             <label for="1-10-Points">1-10 Punkte</label>
                         </div>
                     </div>
+                    <div style="flex: 1 1 100%; display: flex; flex-wrap: wrap; margin-top:1em;">
+                        <label for="custom">Custom</label>
+                    </div>
+                    <div id="custom_area" style="flex: 1 1 100%; flex-direction: column;">
+                        <div style="display:flex; gap:12px; align-items:center;">
+                            <div>
+                                <input type="radio" id="custom-multiple" name="rating_type" value="multiple" checked>
+                                <label for="custom-multiple">Mehrfachauswahl</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="custom-single" name="rating_type" value="single">
+                                <label for="custom-single">Einfachauswahl</label>
+                            </div>
+                            <div style="margin-left:auto; display:flex; gap:12px;">
+                                <button type="button" style="height:1em;" id="add_option_btn" class="icon-btn button">+</button>
+                                <button type="button" style="height:1em;" id="remove_option_btn" class="icon-btn">-</button>
+                            </div>
+                        </div>
+
+                        <div id="custom_options_container" style="display:flex; flex-direction:column; gap:6px;">
+                        </div>
+                    </div>
                 </fieldset>
             </div>
             <footer class="page-footer">
-                <button id="create_course" class="bottom-center">Kurs erstellen</button>
+                <button id="create_course" class="bottom-center">Umfrage erstellen</button>
             </footer>
         </main>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const ratingRadios = document.querySelectorAll('input[name="rating_type"]');
+                const customRadio = document.getElementById('custom');
+                const customArea = document.getElementById('custom_area');
+                const addBtn = document.getElementById('add_option_btn');
+                const removeBtn = document.getElementById('remove_option_btn');
+                const optionsContainer = document.getElementById('custom_options_container');
+
+                let optionCount = 0;
+
+                function updateCustomVisibility() {
+                    customArea.style.display = customRadio.checked ? 'flex' : 'none';
+                }
+
+                function createOptionElement(index) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'custom-option';
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = 'custom_options[]';
+                    input.placeholder = 'Option ' + index;
+                    input.className = 'textinput course-text';
+                    wrapper.appendChild(input);
+                    return wrapper;
+                }
+
+                function addOption() {
+                    optionCount++;
+                    optionsContainer.appendChild(createOptionElement(optionCount));
+                }
+
+                function removeOption() {
+                    if (optionsContainer.children.length > 1) {
+                        optionsContainer.removeChild(optionsContainer.lastElementChild);
+                        optionCount--;
+                    }
+                }
+                
+                addOption();
+                
+                ratingRadios.forEach(r => r.addEventListener('change', updateCustomVisibility));
+                addBtn.addEventListener('click', addOption);
+                removeBtn.addEventListener('click', removeOption);
+                
+                updateCustomVisibility();
+            });
+        </script>
     </body>
 </html>

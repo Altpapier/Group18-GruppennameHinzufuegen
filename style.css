@@ -41,6 +41,12 @@ main {
   margin-top: 6rem;
 }
 
+.kurs {
+  padding: 4rem;
+  margin: auto;
+  margin-top: 4rem;
+}
+
 .sidebar {
   width: 240px;
   background: var(--bg);
@@ -140,7 +146,7 @@ h1 {
 
 .grid {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto 1fr auto;
   gap: 3rem;
 }
@@ -215,7 +221,6 @@ button:active {
   right: 50%;
   
 }
-
 
 progress {
   width: 100%;

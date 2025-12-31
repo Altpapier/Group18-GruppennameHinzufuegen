@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="assets/icon_neu.png">
+        <title>Edit Kurs</title>
+    </head>
+    <body>
+        <main class="big-main">
+            <header>
+                <img src="assets/titel_logo_neu.png" class="top-left">
+            </header>
+            <div style="display:flex;">
+                <div style="flex:1;"> 
+                    <h1>Einstellungen</h1>
+                    <fieldset>
+                        
+                    </fieldset>
+                </div>
+                <div style="flex:1;">
+                        <div style="display:flex; justify-content:flex-end; margin-bottom: 2em;">
+                            <button type="button">Umfrage erstellen</button>
+                        </div>
+                        <fieldset>
+                            <h2>Bitte Auswahlmöglichkeiten der Studenten auswählen</h2>
+                            <div style="display: flex;">
+                                <input style="flex: 1;" type="checkbox" id="Verstaendnisproblem" name="enable_survey_choice">
+                                <label style="flex: 8;" for="Verstaendnisproblem">Verständnisproblem</label>
+                            </div>
+                            <div style="display: flex;" class="">
+                                <input style="flex: 1;" type="checkbox" id="Bitte_schneller" name="enable_survey_choice">
+                                <label style="flex: 8;" for="Bitte_schneller">Bitti bitti schneller</label>
+                            </div>
+
+                            <div style="display: flex;">
+                                <input style="flex: 1;" type="checkbox" id="Pause" name="enable_survey_choice">
+                                <label style="flex: 8;" for="Pause">Pause</label>
+                            </div>
+
+                            <div id="custom_area" style="display:flex; flex: 1 1 100%; flex-direction: column; gap:6px;">
+                            <div style="display:flex; gap:12px; align-items:center;">
+                                
+                                <div style="margin-left:auto; display:flex; gap:12px;">
+                                    <button type="button" style="height:1em;" id="add_option_btn" class="icon-btn button">+</button>
+                                    <button type="button" style="height:1em;" id="remove_option_btn" class="icon-btn">-</button>
+                                </div>
+                            </div>
+
+                            <div id="custom_options_container" style="display:flex; flex-direction:column; gap:6px;">
+                            </div>
+                        </fieldset>
+                    </div>
+                    
+                </div>
+            </div>
+            <footer class="page-footer">
+                <button id="create_survey" type="button">zurück & speichern</button>
+            </footer>
+        </main>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const ratingRadios = document.querySelectorAll('input[name="rating_type"]');
+                const customRadio = document.getElementById('custom');
+                const customArea = document.getElementById('custom_area');
+                const addBtn = document.getElementById('add_option_btn');
+                const removeBtn = document.getElementById('remove_option_btn');
+                const optionsContainer = document.getElementById('custom_options_container');
+
+                let optionCount = 0;
+
+                function updateCustomVisibility() {
+                    customArea.style.display = customRadio.checked ? 'flex' : 'none';
+                }
+
+                function createOptionElement(index) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'custom-option';
+                    wrapper.style.display = 'flex';
+                    wrapper.style.gap = '6px';
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.style.flex = '1';
+                    const input = document.createElement('input');
+                    input.style.flex = '8';
+                    input.type = 'text';
+                    input.name = 'custom_options[]';
+                    input.placeholder = 'Option ' + index;
+                    input.className = 'textinput course-text';
+                    wrapper.appendChild(checkbox);
+                    wrapper.appendChild(input);
+                    return wrapper;
+                }
+
+                function addOption() {
+                    optionCount++;
+                    optionsContainer.appendChild(createOptionElement(optionCount));
+                }
+
+                function removeOption() {
+                    if (optionsContainer.children.length > 1) {
+                        optionsContainer.removeChild(optionsContainer.lastElementChild);
+                        optionCount--;
+                    }
+                }
+                
+                addOption();
+                
+                ratingRadios.forEach(r => r.addEventListener('change', updateCustomVisibility));
+                addBtn.addEventListener('click', addOption);
+                removeBtn.addEventListener('click', removeOption);
+                
+                updateCustomVisibility();
+            });
+        </script>
+    </body>
+</html>

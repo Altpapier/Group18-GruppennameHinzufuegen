@@ -50,6 +50,16 @@ main {
   margin-top: 4rem;
 }
 
+.radio {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.landing {
+  margin-top: 0;
+}
+
 .sidebar {
   width: 240px;
   background: var(--bg);
@@ -97,15 +107,13 @@ header {
 }
 
 .landing img {
-  width: 70%;
+  width: 60%;
   display: block;
   margin: 0 auto;
 }
 
-.student img {
-  width: 60%;
-  display: block;
-  margin: 0 auto;
+main.student {
+  width: min(30rem, 100%);
 }
 
 .qrcode img {
@@ -219,7 +227,7 @@ button:active {
 }
 
 .bottom-center {
-  position: absolute;
+  margin-top: auto;
   bottom: 1em;
   right: 50%;
   

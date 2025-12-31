@@ -14,14 +14,16 @@
     </head>
     <body>
         <div class="layout">
+            <header>
+                <img src="assets/titel_logo_neu.png" class="top-left">
+            </header>
             <main class="student small-main">
-                <img src="assets/titel_logo_neu.png"> 
                 <div class="flex">
                     <h1>FEEDBACK</h1>
-                    <button data-type="ok">👍<span>Verstanden</span></button>
-                    <button data-type="unsure">😐<span>Unsicher</span></button>
-                    <button data-type="fast">👎<span>Zu schnell</span></button>
-                    <button data-type="question">❓<span>Frage</span></button>
+                    <button class="feedback" data-type="ok">👍<span>Verstanden</span></button>
+                    <button class="feedback" data-type="unsure">😐<span>Unsicher</span></button>
+                    <button class="feedback" data-type="fast">👎<span>Zu schnell</span></button>
+                    <button class="feedback" data-type="question">❓<span>Frage</span></button>
                 </div>
                 <p id="status"></p>
             </main>

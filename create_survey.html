@@ -8,10 +8,10 @@
         <title>Create Survey</title>
     </head>
     <body>
+        <header>
+            <img src="assets/titel_logo_neu.png" alt="logo">
+        </header>
         <main class="small-main">
-            <header>
-                <img src="assets/titel_logo_neu.png" class="top-left">
-            </header>
             <div>
                 <label class="top-left-Titel">NEUE UMFRAGE</label>
                 <label for="survey_name">Umfragen Titel</label>
@@ -42,26 +42,31 @@
                             <label for="1-10-Points">1-10 Punkte</label>
                         </div>
                     </div>
-                    <div style="flex: 1 1 100%; display: flex; flex-wrap: wrap; margin-top:1em;">
-                        <label for="custom">Custom</label>
-                    </div>
-                    <div id="custom_area" style="flex: 1 1 100%; flex-direction: column;">
-                        <div style="display:flex; gap:12px; align-items:center;">
-                            <div>
-                                <input type="radio" id="custom-multiple" name="rating_type" value="multiple" checked>
-                                <label for="custom-multiple">Mehrfachauswahl</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="custom-single" name="rating_type" value="single">
-                                <label for="custom-single">Einfachauswahl</label>
-                            </div>
-                            <div style="margin-left:auto; display:flex; gap:12px;">
-                                <button type="button" style="height:1em;" id="add_option_btn" class="icon-btn button">+</button>
-                                <button type="button" style="height:1em;" id="remove_option_btn" class="icon-btn">-</button>
-                            </div>
+                    <div class="field" style="flex: 1 1 100%; display: flex; flex-wrap: wrap; margin-top:1em;">
+                        <div style="flex: 1 1 100%; display: flex; flex-wrap: wrap;">
+                            <label for="custom">Custom:</label>
                         </div>
+                        <div id="custom_area" style="flex: 1 1 100%; flex-direction: column;">
+                            <div style="display:flex; gap:12px; align-items:center;">
+                                <div>
+                                    <input type="radio" id="custom-multiple" name="rating_type" value="multiple" checked>
+                                    <label for="custom-multiple">Mehrfachauswahl</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="custom-single" name="rating_type" value="single">
+                                    <label for="custom-single">Einfachauswahl</label>
+                                </div>
+                                <div style="margin-left:auto; display:flex; gap:12px;">
+                                    <button type="button" style="height:1em;" id="add_option_btn" class="icon-btn button">+</button>
+                                    <button type="button" style="height:1em;" id="remove_option_btn" class="icon-btn">-</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="custom_options_container">Auswahlmöglichkeiten:</label>
+                            </div>
 
-                        <div id="custom_options_container" style="display:flex; flex-direction:column; gap:6px;">
+                            <div id="custom_options_container" style="display:flex; flex-direction:column; gap:6px;">
+                            </div>
                         </div>
                     </div>
                 </fieldset>

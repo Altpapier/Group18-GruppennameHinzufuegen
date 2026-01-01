@@ -10,21 +10,71 @@
     <body>
         <header>
             <img src="assets/titel_logo_neu.png" alt="logo">
-            <h1>ÜBERSCHRIFT</h1>
         </header>
         <main class="small-main">
             <h1 class="top-left-Titel">KURS NAME</h1>
             <form class="flex">
-                <label for="evaluation">Generelle bewertung der heutigen Veranstaltung:</label>
-                <input type="text" name="Kursname" id="course_name" class="textinput course-text" placeholder="Kursname eingeben">
+                <label>Generelle Bewertung der heutigen Veranstaltung</label>
+                <fieldset class="rating">
+                    <label>
+                        <input type="radio" name="rating" value="1">
+                        <span>1</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="rating" value="2">
+                        <span>2</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="rating" value="3">
+                        <span>3</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="rating" value="4">
+                        <span>4</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="rating" value="5">
+                        <span>5</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="rating" value="6">
+                        <span>6</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="rating" value="7">
+                        <span>7</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="rating" value="8">
+                        <span>8</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="rating" value="9">
+                        <span>9</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="rating" value="10">
+                        <span>10</span>
+                    </label>
+                </fieldset>
+
                 <label for="comments">Kommentare:</label>
-                <input type="text" name="comments" id="comments" class="textinput course-text" placeholder="Zusätzliche kommentare">
+                <input type="text" name="comments" id="comments" class="textinput course-text" placeholder="Zusätzliche Anmerkungen">
             
                 <footer class="page-footer">
                     <button id="submit" type="submit">Absenden</button>
                     <button id="leave">Verlassen</button>
                 </footer>
             </form>
+
+            <div class="popup-backdrop" id="loginpopup">
+                <div class="popup">
+                <h2>Feedback speichern?</h2>
+
+                <button>Anmelden</button>
+                <button class="secondary">Ohne Anmeldung verlassen</button>
+                </div>
+            </div>
         </main>
     </body>
 </html>

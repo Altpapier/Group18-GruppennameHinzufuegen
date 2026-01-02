@@ -5,6 +5,7 @@ const dbName = "livefeedback";
 const dbUrl = `http://127.0.0.1:5984/${dbName}/`;
 
 const request = new XMLHttpRequest();
+const notifications = [];
 request.onreadystatechange = () => {
     if (request.readyState !== 4) return; // only run when request is done
 
@@ -38,16 +39,48 @@ function checkSurvey() {
     get("showSurvey");
 }
 
+function addNotification(message) {
+    notifications.push({ message: message, time: Date.now() });
+    displayNotifications();
+}
+
+function displayNotifications() {
+    const container = document.getElementById("notification-container");
+    container.innerHTML = "";
+
+    notifications.forEach((item, index) => {
+        const timeDiff = Date.now() - item.time;
+        const minutes = Math.floor(timeDiff / 60000);
+        const timeString = minutes === 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
+
+        const box = document.createElement("div");
+        box.className = "notification-box";
+        box.innerHTML = `
+                <div class="notification-content">
+                    <span class="notification-type">${item.message}</span>
+                    <span class="notification-time">${timeString}</span>
+                </div>
+                <button class="close-btn" onclick="removeNotification(${index})">✕</button>
+            `;
+        container.appendChild(box);
+    });
+}
+
+function removeNotification(index) {
+    notifications.splice(index, 1);
+    displayNotifications();
+}
+
 function handleSubmit(response) {
     const selectedOption = document.querySelector('input[name="smiley"]:checked');
     if (!selectedOption) {
-        alert("No option selected!");
+        addNotification("Keine Option ausgewählt!");
         return;
     }
     const value = response.votes ? response.votes : [];
     value.push(selectedOption.value);
     put(response, { votes: value });
-    alert("Feedback saved!");
+    addNotification("Feedback übermittelt!");
 
     const req = new XMLHttpRequest();
     req.open("GET", dbUrl + "showSurvey", false);

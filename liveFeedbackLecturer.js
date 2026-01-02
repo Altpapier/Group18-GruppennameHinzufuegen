@@ -5,7 +5,6 @@ const dbName = "livefeedback";
 const dbUrl = `http://127.0.0.1:5984/${dbName}/`;
 
 let lastFeedbackData = "";
-
 const request = new XMLHttpRequest();
 request.onreadystatechange = () => {
     if (request.readyState !== 4) return; // only run when request is done
@@ -128,7 +127,8 @@ function startSurvey() {
     checkReq.send();
 
     if (checkReq.status === 200) {
-        alert("A survey is already running!");
+        deleteSurvey();
+        startSurvey();
         return;
     }
 

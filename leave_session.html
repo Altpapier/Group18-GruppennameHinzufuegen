@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="de">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
-        <link rel="icon" href="assets/icon_neu.png">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="icon" href="assets/icon_neu.png" />
         <title>Live-Feedback</title>
     </head>
     <body>
         <header>
-            <img src="assets/titel_logo_neu.png" alt="logo">
+            <img src="assets/titel_logo_neu.png" alt="logo" />
         </header>
         <main class="small-main">
             <h1 class="top-left-Titel">KURS NAME</h1>
@@ -17,64 +17,84 @@
                 <label>Generelle Bewertung der heutigen Veranstaltung</label>
                 <fieldset class="rating">
                     <label>
-                        <input type="radio" name="rating" value="1">
+                        <input type="radio" name="rating" value="1" />
                         <span>1</span>
                     </label>
                     <label>
-                        <input type="radio" name="rating" value="2">
+                        <input type="radio" name="rating" value="2" />
                         <span>2</span>
                     </label>
                     <label>
-                        <input type="radio" name="rating" value="3">
+                        <input type="radio" name="rating" value="3" />
                         <span>3</span>
                     </label>
                     <label>
-                        <input type="radio" name="rating" value="4">
+                        <input type="radio" name="rating" value="4" />
                         <span>4</span>
                     </label>
                     <label>
-                        <input type="radio" name="rating" value="5">
+                        <input type="radio" name="rating" value="5" />
                         <span>5</span>
                     </label>
                     <label>
-                        <input type="radio" name="rating" value="6">
+                        <input type="radio" name="rating" value="6" />
                         <span>6</span>
                     </label>
                     <label>
-                        <input type="radio" name="rating" value="7">
+                        <input type="radio" name="rating" value="7" />
                         <span>7</span>
                     </label>
                     <label>
-                        <input type="radio" name="rating" value="8">
+                        <input type="radio" name="rating" value="8" />
                         <span>8</span>
                     </label>
                     <label>
-                        <input type="radio" name="rating" value="9">
+                        <input type="radio" name="rating" value="9" />
                         <span>9</span>
                     </label>
                     <label>
-                        <input type="radio" name="rating" value="10">
+                        <input type="radio" name="rating" value="10" />
                         <span>10</span>
                     </label>
                 </fieldset>
 
                 <label for="comments">Kommentare:</label>
-                <input type="text" name="comments" id="comments" class="textinput course-text" placeholder="Zusätzliche Anmerkungen">
-            
+                <input
+                    type="text"
+                    name="comments"
+                    id="comments"
+                    class="textinput course-text"
+                    placeholder="Zusätzliche Anmerkungen"
+                />
+
                 <footer class="page-footer">
                     <button id="submit" type="submit">Absenden</button>
                     <button id="leave">Verlassen</button>
                 </footer>
             </form>
 
-            <div class="popup-backdrop" id="loginpopup">
+            <div class="popup-backdrop" id="loginpopup" style="display: none">
                 <div class="popup">
-                <h2>Feedback speichern?</h2>
+                    <h2>Feedback speichern?</h2>
 
-                <button>Anmelden</button>
-                <button class="secondary">Ohne Anmeldung verlassen</button>
+                    <button>Anmelden</button>
+                    <button class="secondary">Ohne Anmeldung verlassen</button>
+                    <button id="closePopup" class="secondary">Abbrechen</button>
                 </div>
             </div>
         </main>
     </body>
+    <script>
+        document.getElementById("leave").addEventListener("click", displayPopup);
+        document.getElementById("submit").addEventListener("click", displayPopup);
+        document.getElementById("closePopup").addEventListener("click", hidePopup);
+
+        function displayPopup() {
+            document.getElementById("loginpopup").style.display = "flex";
+        }
+
+        function hidePopup() {
+            document.getElementById("loginpopup").style.display = "none";
+        }
+    </script>
 </html>

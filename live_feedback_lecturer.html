@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="icon" href="assets/icon_neu.png" />
+        <title>Live Feedback</title>
+        <script>
+            function toggle() {
+                document.body.classList.toggle("light");
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <img src="assets/titel_logo_neu.png" alt="logo" />
+        </header>
+        <main class="big-main">
+            <div class="title-and-start-survey" name="title-and-start-survey">
+                <button class="start-survey-btn" onclick="displayPopup()">Umfrage starten</button>
+                <label class="top-left-Titel" id="course-name-life-lecturer"
+                    >Grundlagen der Mensch-Computer-Interaktion</label
+                >
+            </div>
+            <div
+                class="flex"
+                style="display: none; flex-direction: column; align-items: center"
+                name="overview"
+                id="survey"
+            >
+                <h1>UMFRAGE ÜBERSICHT</h1>
+                <fieldset style="background-color: #f0f0f0; padding: 2rem">
+                    <div style="display: flex; justify-content: center" class="overview">
+                        <div class="stat-box">
+                            <span class="emoji">👍</span>
+                            <h3 id="positive-feedback">42%</h3>
+                        </div>
+                        <div class="stat-box">
+                            <span class="emoji">👎</span>
+                            <h3 id="negative-feedback">58%</h3>
+                        </div>
+                    </div>
+                    <div class="progress-wrapper">
+                        <div class="progress" role="progressbar">
+                            <div class="progress-fill" id="progress-fill" style="width: 42%"></div>
+                        </div>
+                    </div>
+                </fieldset>
+                <button onclick="deleteSurvey()">Umfrage beenden</button>
+            </div>
+            <div id="no-survey" style="display: flex; flex-direction: column; align-items: center">
+                <h3>Es läuft gerade keine Umfrage.</h3>
+            </div>
+            <footer class="page-footer">
+                <button class="bottom-center">Beenden</button>
+            </footer>
+
+            <div class="popup-backdrop" id="survey-popup" style="display: none">
+                <div class="popup">
+                    <h2>Umfrage starten</h2>
+
+                    <button onclick="startSurvey()">Eine super tolle Frage?</button>
+                    <button class="secondary" onclick="hidePopup()">Abbrechen</button>
+                </div>
+            </div>
+            <div id="notification-container" class="notification-container"></div>
+        </main>
+    </body>
+    <script src="liveFeedbackLecturer.js"></script>
+</html>

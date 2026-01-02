@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="de">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
-        <link rel="icon" href="assets/icon_neu.png">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="icon" href="assets/icon_neu.png" />
         <title>Live Feedback</title>
         <script>
             function toggle() {
@@ -14,17 +14,26 @@
     </head>
     <body>
         <header>
-            <img src="assets/titel_logo_neu.png" alt="logo">
+            <img src="assets/titel_logo_neu.png" alt="logo" />
         </header>
         <main class="student small-main">
             <div class="flex">
                 <h1>FEEDBACK</h1>
-                <button class="feedback" data-type="ok">👍<span>Verstanden</span></button>
-                <button class="feedback" data-type="unsure">😐<span>Unsicher</span></button>
-                <button class="feedback" data-type="fast">👎<span>Zu schnell</span></button>
-                <button class="feedback" data-type="question">❓<span>Frage</span></button>
+                <button class="feedback" data-type="ok" onclick="set('feedback', 'ok')">
+                    👍<span>Verstanden</span>
+                </button>
+                <button class="feedback" data-type="unsure" onclick="set('feedback', 'unsure')">
+                    😐<span>Unsicher</span>
+                </button>
+                <button class="feedback" data-type="fast" onclick="set('feedback', 'fast')">
+                    👎<span>Zu schnell</span>
+                </button>
+                <button class="feedback" data-type="question" onclick="set('feedback', 'question')">
+                    ❓<span>Frage</span>
+                </button>
             </div>
             <p id="status"></p>
         </main>
     </body>
+    <script src="index.js"></script>
 </html>

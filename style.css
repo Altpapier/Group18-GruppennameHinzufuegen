@@ -104,7 +104,7 @@ header img {
 }
 
 .qrcode img {
-    width: 20em;
+    width: min(30em, 50vw);
     margin: 0 auto;
     margin-right: 1em;
 }

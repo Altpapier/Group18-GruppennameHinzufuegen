@@ -17,11 +17,22 @@
             <img src="assets/titel_logo_neu.png" alt="logo" />
         </header>
         <main class="student small-main">
-            <div style="display: grid; grid-template-columns: 1fr; grid-template-rows: auto; gap: 2rem;">
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-template-rows: auto;
+                    gap: 2rem;
+                "
+            >
                 <h1>LIVE FEEDBACK</h1>
                 <div class="flex_wrap">
-                    <button class="feedback" data-type="problem" onclick="set('feedback', 'problem')">
-                        👎<span>Verständnissproblem</span>
+                    <button
+                        class="feedback"
+                        data-type="problem"
+                        onclick="set('feedback', 'problem')"
+                    >
+                        👎<span>Verständnisproblem</span>
                         <p>bitte nochmal erklären</p>
                     </button>
                     <button class="feedback" data-type="good" onclick="set('feedback', 'good')">
@@ -35,7 +46,7 @@
                         <p>bitte langsamer</p>
                     </button>
                     <button class="feedback" data-type="slow" onclick="set('feedback', 'slow')">
-                        🐌<span>Zu Langlsam</span>
+                        🐌<span>Zu Langsam</span>
                         <p>bitte schneller</p>
                     </button>
                 </div>

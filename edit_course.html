@@ -14,9 +14,13 @@
             </header>
             <div style="display:flex;">
                 <div style="flex:1;"> 
-                    <h1>Einstellungen</h1>
+                    <h1>EINSTELLUNGEN</h1>
                     <fieldset>
-                        
+                        <label style="font-size: 1.4rem;margin-bottom: 1em;">Umfragen</label>
+                        <button style="width: 100%; min-height: 100px; display: block; padding: 0.75rem 1rem; font-size: 1.4rem; text-align: left; box-sizing: border-box;">
+                            <label>Wie ist das heutige T-shirt?</label>
+                            <label style="font-weight: 400;">Umfragenart: 😀 / 😊 / 😐 / ☹️ / 😧</label>
+                        </button>
                     </fieldset>
                 </div>
                 <div style="flex:1;">
@@ -27,24 +31,26 @@
                             <h2>Bitte Live-Auswahlmöglichkeiten der Studenten auswählen</h2>
                             <div style="display: flex;">
                                 <input style="flex: 1;" type="checkbox" id="Verstaendnisproblem" name="enable_survey_choice">
-                                <label style="flex: 8;" for="Verstaendnisproblem">Verständnisproblem</label>
+                                <label style="flex: 8;" for="Verstaendnisproblem">Verständnisproblem / Verstanden</label>
                             </div>
                             <div style="display: flex;" class="">
                                 <input style="flex: 1;" type="checkbox" id="Bitte_schneller" name="enable_survey_choice">
-                                <label style="flex: 8;" for="Bitte_schneller">Bitti bitti schneller</label>
+                                <label style="flex: 8;" for="Bitte_schneller">Zu schnell / langsam</label>
                             </div>
 
                             <div style="display: flex;">
-                                <input style="flex: 1;" type="checkbox" id="Pause" name="enable_survey_choice">
-                                <label style="flex: 8;" for="Pause">Pause</label>
+                                <input style="flex: 1;" type="checkbox" id="too_quiet/loud" name="enable_survey_choice">
+                                <label style="flex: 8;" for="Pause">Zu leise / laut</label>
+                            </div>
+
+                            <div style="display: flex;">
+                                <input style="flex: 1;" type="checkbox" id="not_readable" name="enable_survey_choice">
+                                <label style="flex: 8;" for="Pause">Nicht lesbar</label>
                             </div>
 
                             <div id="custom_area" style="display:flex; flex: 1 1 100%; flex-direction: column; gap:6px;">
-                            <div style="display:flex; gap:12px; align-items:center;">
 
-                            </div>
-
-                            <div id="custom_options_container" style="display:flex; flex-direction:column; gap:6px;">
+                            <div id="custom_options_container" style="display:flex; flex-direction:column; gap:6px;" class="vertical-flex">
                             </div>
                             <div style="margin: 1rem auto; display:flex; gap:12px;">
                                 <button type="button" style="height:1em; min-width: 1em;" id="add_option_btn" class="icon-btn button">+</button>
@@ -80,13 +86,15 @@
                     wrapper.className = 'custom-option';
                     wrapper.style.display = 'flex';
                     wrapper.style.gap = '6px';
+                    wrapper.style.alignItems = 'center';
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.style.flex = '1';
+                    checkbox.style.marginLeft = '0.4rem';
                     const input = document.createElement('input');
                     input.style.flex = '8';
                     input.type = 'text';
-                    input.name = 'custom_options[]';
+                    input.name = 'custom_options';
                     input.placeholder = 'Option ' + index;
                     input.className = 'textinput course-text';
                     wrapper.appendChild(checkbox);

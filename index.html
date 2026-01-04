@@ -17,23 +17,44 @@
             <img src="assets/titel_logo_neu.png" alt="logo" />
         </header>
         <main class="student small-main">
-            <div class="grid">
+            <div style="display: grid; grid-template-columns: 1fr; grid-template-rows: auto; gap: 2rem;">
                 <h1>LIVE FEEDBACK</h1>
-                <button class="feedback" data-type="ok" onclick="set('feedback', 'ok')">
-                    👍<span>Verstanden</span>
-                </button>
-                <button class="feedback" data-type="unsure" onclick="set('feedback', 'unsure')">
-                    😐<span>Unsicher</span>
-                </button>
-                <button class="feedback" data-type="fast" onclick="set('feedback', 'fast')">
-                    👎<span>Zu schnell</span>
-                </button>
-                <button class="feedback" data-type="question" onclick="set('feedback', 'question')">
-                    ❓<span>Frage</span>
-                </button>
+                <div class="flex_wrap">
+                    <button class="feedback" data-type="ok" onclick="set('feedback', 'ok')">
+                        👎<span>Verständnissproblem</span>
+                        <p>bitte nochmal erklären</p>
+                    </button>
+                    <button class="feedback" data-type="ok" onclick="set('feedback', 'ok')">
+                        👍<span>Verstanden</span>
+                        <p>kann weiter gehen</p>
+                    </button>
+                </div>
+                <div class="flex_wrap">
+                    <button class="feedback" data-type="ok" onclick="set('feedback', 'ok')">
+                        <span>Zu Schnell</span>
+                        <p>bitte langsamer</p>
+                    </button>
+                    <button class="feedback" data-type="ok" onclick="set('feedback', 'ok')">
+                        👍<span>Zu Langlsam</span>
+                        <p>bitte schneller</p>
+                    </button>
+                </div>
+                <div class="flex_wrap">
+                    <button class="feedback" data-type="ok" onclick="set('feedback', 'ok')">
+                        👍<span>Zu Laut</span>
+                        <p>bitte leiser</p>
+                    </button>
+                    <button class="feedback" data-type="ok" onclick="set('feedback', 'ok')">
+                        👍<span>Zu Schnell</span>
+                        <p>bitte langsamer</p>
+                    </button>
+                </div>
             </div>
             <p id="status"></p>
             <div id="notification-container" class="notification-container"></div>
+            <footer class="page-footer">
+                <a class="button" href="leave_session.html">Verlassen</a>
+            </footer>
         </main>
     </body>
     <script src="index.js"></script>

@@ -151,6 +151,7 @@ form {
 .flex_wrap {
   display: flex;
   flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .grid {
@@ -208,13 +209,17 @@ button {
 
 button span {
     margin-top: 0.5rem;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .button span {
     margin-top: 0.5rem;
-    font-size: 1rem;
+    font-size: 0.7rem;
     text-decoration: none;
+}
+
+button p {
+    font-size: 0.6em;
 }
 
 button:hover {
@@ -539,28 +544,4 @@ input.submit {
     min-width: auto;
     box-shadow: none;
     color: var(--text);
-}
-
-.select-10 {
-    width: 90%;
-    margin: 0 0;
-    padding: 0 0;
-    display: flex;
-    flex: auto;
-    text-align: center;
-}
-
-.select-10 > span {
-    border: grey solid 1px;
-    border-radius: 50%;
-    width: 28pt;
-    line-height: 28pt;
-    margin: auto;
-    font-size: x-large;
-    font-weight: 700;
-}
-
-.select-10 > span.selected {
-    border: black solid 1px;
-    background-color:aquamarine;
 }

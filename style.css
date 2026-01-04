@@ -184,12 +184,44 @@ button {
     box-shadow 0.15s cubic-bezier(.4,0,.2,1);*/
 }
 
+.button {
+    background: var(--bg-light);
+    box-shadow: -3px -3px 3px 2px var(--highlight), 3px 3px 5px 2px var(--shadow),
+        4px 4px 6px var(--shadow);
+    border: none;
+    border-radius: 25px;
+    padding: 2rem 2rem;
+    min-width: 200px;
+    font-size: 1.25rem;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*transition:
+    transform 0.15s cubic-bezier(.4,0,.2,1),
+    box-shadow 0.15s cubic-bezier(.4,0,.2,1);*/
+    text-decoration: none;
+}
+
 button span {
     margin-top: 0.5rem;
     font-size: 1rem;
 }
 
+.button span {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
 button:hover {
+    background: var(--bg-light);
+    transform: translateY(1px);
+    box-shadow: inset 2px 3px 3px 2px var(--shadow), inset -2px -3px 3px 2px var(--highlight);
+}
+
+.button:hover {
     background: var(--bg-light);
     transform: translateY(1px);
     box-shadow: inset 2px 3px 3px 2px var(--shadow), inset -2px -3px 3px 2px var(--highlight);
@@ -200,7 +232,18 @@ button:active {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
+.button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
 button.secondary {
+    background: transparent;
+    box-shadow: none;
+    border: 2px solid var(--shadow);
+}
+
+.button.secondary {
     background: transparent;
     box-shadow: none;
     border: 2px solid var(--shadow);

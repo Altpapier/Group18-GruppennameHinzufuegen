@@ -149,9 +149,9 @@ form {
 }
 
 .flex_wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .grid {
@@ -264,7 +264,7 @@ button.secondary {
 
 .top-left-Titel {
     position: absolute;
-    top: 6rem;
+    top: 7rem;
     left: 1em;
 }
 

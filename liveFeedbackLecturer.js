@@ -56,10 +56,12 @@ function hidePopup() {
 }
 
 const typeToText = {
-    ok: "Verstanden",
-    unsure: "Unsicher",
-    fast: "Zu schnell",
-    question: "Frage",
+    problem: "Verständnisproblem, bitte nochmal erklären",
+    good: "Verstanden, kann weiter gehen",
+    fast: "Zu schnell, bitte langsamer",
+    slow: "Zu langsam, bitte schneller",
+    loud: "Zu laut, bitte leiser",
+    silent: "Zu leise, bitte lauter",
 };
 
 function displayFeedback(response) {

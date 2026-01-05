@@ -282,6 +282,12 @@ button.secondary {
     transform: translate(-50%, 0);
 }
 
+.feedback {
+    padding: 1rem 1rem;
+    font-size: 1rem;
+    min-width: 180px;
+}
+
 .right {
     position: absolute;
     right: 0%;
@@ -568,5 +574,5 @@ input.submit {
 
 .select-10 > span.selected {
     border: black solid 1px;
-    background-color:aquamarine;
+    background-color: aquamarine;
 }

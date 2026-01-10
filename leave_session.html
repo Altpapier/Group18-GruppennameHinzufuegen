@@ -68,8 +68,8 @@
                 />
 
                 <footer class="page-footer">
-                    <button id="submit" type="submit">Absenden</button>
-                    <button id="leave">Verlassen</button>
+                    <a class="button" href="/index.html">Zurück</a>
+                    <button id="leave">Absenden & Verlassen</button>
                 </footer>
             </form>
 
@@ -94,7 +94,6 @@
         });
 
         document.getElementById("leave").addEventListener("click", displayPopup);
-        document.getElementById("submit").addEventListener("click", displayPopup);
         document.getElementById("closePopup").addEventListener("click", hidePopup);
 
         function displayPopup() {

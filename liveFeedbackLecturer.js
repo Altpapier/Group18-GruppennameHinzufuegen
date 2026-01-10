@@ -2,7 +2,7 @@ const loginName = "admin";
 const loginPassword = "mysecretpassword";
 
 const dbName = "livefeedback";
-const dbUrl = `http://127.0.0.1:5984/${dbName}/`;
+const dbUrl = `http://192.168.178.90:5984/${dbName}/`;
 
 let lastFeedbackData = "";
 const request = new XMLHttpRequest();
@@ -76,7 +76,7 @@ function displayFeedback(response) {
         feedbackList.forEach((item, index) => {
             const timeDiff = Date.now() - item.time;
             const minutes = Math.floor(timeDiff / 60000);
-            const timeString = minutes === 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
+            const timeString = minutes <= 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
 
             const box = document.createElement("div");
             box.className = "notification-box";

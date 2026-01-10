@@ -24,7 +24,7 @@
                 />
                 <label>Bewertungsart</label>
                 <fieldset class="flex_wrap">
-                    <div class="flex_wrap" style="flex: 1 1;">
+                    <div class="flex_wrap" style="flex: 1 1">
                         <div style="flex: 1 1 width">
                             <input type="radio" id="thumb" name="rating_type" class="left-center" />
                         </div>
@@ -32,7 +32,7 @@
                             <label for="thumb">Daumen hoch/runter</label>
                         </div>
                     </div>
-                    <div class="flex_wrap" style="flex: 1 1;">
+                    <div class="flex_wrap" style="flex: 1 1">
                         <div style="flex: 1 1 width">
                             <input
                                 type="radio"
@@ -45,7 +45,7 @@
                             <label for="smiley">Smiley</label>
                         </div>
                     </div>
-                    <div class="flex_wrap" style="flex: 1 1;">
+                    <div class="flex_wrap" style="flex: 1 1">
                         <div style="flex: 1 1 width">
                             <input
                                 type="radio"
@@ -62,26 +62,26 @@
                         class="field"
                         style="flex: 1 1 100%; display: flex; flex-wrap: wrap; margin-top: 1em"
                     >
-                        <div class="flex_wrap" style="flex: 1 1 100%;">
+                        <div class="flex_wrap" style="flex: 1 1 100%">
                             <label for="custom">Custom:</label>
                         </div>
                         <div id="custom_area" style="flex: 1 1 100%; flex-direction: column">
                             <div style="display: flex; gap: 12px; align-items: center">
-                                    <input
-                                        type="radio"
-                                        id="custom-multiple"
-                                        name="rating_type"
-                                        value="multiple"
-                                        checked
-                                    />
-                                    <label for="custom-multiple">Mehrfachauswahl</label>
-                                    <input
-                                        type="radio"
-                                        id="custom-single"
-                                        name="rating_type"
-                                        value="single"
-                                    />
-                                    <label for="custom-single">Einfachauswahl</label>
+                                <input
+                                    type="radio"
+                                    id="custom-multiple"
+                                    name="rating_type"
+                                    value="multiple"
+                                    checked
+                                />
+                                <label for="custom-multiple">Mehrfachauswahl</label>
+                                <input
+                                    type="radio"
+                                    id="custom-single"
+                                    name="rating_type"
+                                    value="single"
+                                />
+                                <label for="custom-single">Einfachauswahl</label>
                             </div>
                             <div>
                                 <label for="custom_options_container">Auswahlmöglichkeiten:</label>
@@ -91,14 +91,29 @@
                                 id="custom_options_container"
                                 style="display: flex; flex-direction: column; gap: 6px"
                             ></div>
-                            <div style="margin: 1rem auto; display:flex; gap:12px;">
-                                <button type="button" style="height:1em; min-width: 1em;" id="add_option_btn" class="icon-btn button">+</button>
-                                <button type="button" style="height:1em; min-width: 1em;" id="remove_option_btn" class="icon-btn">-</button>
+                            <div style="margin: 1rem auto; display: flex; gap: 12px">
+                                <button
+                                    type="button"
+                                    style="height: 1em; min-width: 1em"
+                                    id="add_option_btn"
+                                    class="icon-btn button"
+                                >
+                                    +
+                                </button>
+                                <button
+                                    type="button"
+                                    style="height: 1em; min-width: 1em"
+                                    id="remove_option_btn"
+                                    class="icon-btn"
+                                >
+                                    -
+                                </button>
                             </div>
                         </div>
                     </div>
                 </fieldset>
                 <footer class="page-footer">
+                    <a class="button" href="/edit_course.html">Abbrechen</a>
                     <button id="create_course" class="bottom-center">Umfrage erstellen</button>
                 </footer>
             </form>

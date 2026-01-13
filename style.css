@@ -94,6 +94,11 @@ header img {
     height: 100%;
 }
 
+.logo {
+    height: 100%;
+    display: inline-block;
+}
+
 .signin {
     margin: auto 0;
 }
@@ -565,7 +570,7 @@ input.submit {
 }
 
 .select-10 > span {
-    border: grey solid 1px;
+    border: var(--text-light) solid 1px;
     border-radius: 50%;
     width: 28pt;
     line-height: 28pt;

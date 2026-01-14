@@ -83,7 +83,7 @@ footer {
 }
 
 .course-text {
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 12px;
     border: 2px solid var(--shadow);
     background: var(--bg-light);
@@ -173,7 +173,6 @@ form {
     background-color: var(--bg);
     border-radius: 20px;
     padding: 2rem;
-    margin: 1rem;
 }
 
 button {
@@ -328,13 +327,15 @@ progress {
 
 label {
     display: block;
-    font-size: 18pt;
     font-weight: 700;
+    font-size: 1.25rem;
 }
 
 input.textinput {
     width: 100%;
-    font-size: 16pt;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text);
 }
 
 input.submit {
@@ -354,14 +355,8 @@ input.submit {
 }
 
 .custom-option input[type="checkbox"] {
-    width: 1.6rem;
-    height: 1.6rem;
-}
-
-.custom-option input[type="text"] {
-    font-size: 18pt;
-    font-weight: 700;
-    color: var(--text);
+    width: 1rem;
+    height: 1rem;
 }
 
 .rating {
@@ -483,10 +478,6 @@ input.submit {
 .title-and-start-survey .start-survey-btn {
     margin-left: auto;
     min-width: 160px;
-}
-.progress-label {
-    font-weight: 700;
-    color: var(--text-light);
 }
 
 /* Floating bottom-right element */

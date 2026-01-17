@@ -35,8 +35,16 @@
                 />
 
                 <footer class="page-footer">
-                    <a class="button" href="kurse_lecturer.html">Abbrechen</a>
-                    <button id="create_course" type="submit">Kurs erstellen</button>
+                    <a 
+                        class="button" 
+                        href="kurse_lecturer.html">
+                        Abbrechen
+                    </a>
+                    <button 
+                        id="create_course" 
+                        type="submit">
+                        Kurs erstellen
+                    </button>
                 </footer>
             </form>
         </main>
@@ -48,17 +56,8 @@
                 const courseName = document.getElementById('course_name').value.trim();
                 const courseDate = document.getElementById('course_date').value;
                 
-                if (courseName && courseDate) {
-                    const course = courseManager.addCourse(courseName, courseDate);
-                    if (course) {
-                        alert('Kurs erfolgreich erstellt: ' + courseName);
-                        window.location.href = 'kurse_lecturer.html';
-                    } else {
-                        alert('Fehler beim Erstellen des Kurses');
-                    }
-                } else {
-                    alert('Bitte alle Felder ausfüllen');
-                }
+                const course = courseManager.addCourse(courseName, courseDate);
+                window.location.href = 'kurse_lecturer.html';
             });
         </script>
     </body>

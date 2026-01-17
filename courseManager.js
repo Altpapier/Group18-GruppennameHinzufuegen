@@ -71,5 +71,4 @@ class CourseManager {
     }
 }
 
-// Globale Instanz
 const courseManager = new CourseManager();

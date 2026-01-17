@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" href="assets/icon_neu.png" />
         <title>Courses Lecturer</title>
+        <script src="courseManager.js"></script>
         <script>
             function toggle() {
                 document.body.classList.toggle("dark");
@@ -18,19 +19,47 @@
         </header>
         <main class="kurs">
             <h1>KURSE</h1>
-            <div class="grid">
-                <a class="button" href="summary_lecturer.html">
-                    <h2 class="course_name">Grundlagen der Mensch-Computer-Interaktion</h2>
-                    <p>Nächste Vorlesung 12.1.2026<br /></p>
-                </a>
-                <a class="button" href="summary_lecturer.html">
-                    <h2 class="course_name">Programmieren II</h2>
-                    <p>Nächste Vorlesung 20.1.2026<br /></p>
-                </a>
+            <div class="grid" id="coursesContainer">
+                <!-- Kurse werden hier dynamisch eingefügt -->
             </div>
             <footer class="page-footer">
                 <a class="button" href="create_course.html">Neuen Kurs erstellen</a>
             </footer>
         </main>
+
+        <script>
+            function loadCourses() {
+                const container = document.getElementById('coursesContainer');
+                const courses = courseManager.getCourses();
+                
+                // Container leeren
+                container.innerHTML = '';
+                
+                if (courses.length === 0) {
+                    container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2em;">Keine Kurse vorhanden. <a href="create_course.html">Erstelle einen neuen Kurs.</a></p>';
+                    return;
+                }
+                
+                // Kurse anzeigen
+                courses.forEach(course => {
+                    const courseDate = new Date(course.date);
+                    const formattedDate = courseDate.toLocaleDateString('de-DE');
+                    
+                    const courseElement = document.createElement('div');
+                    courseElement.style.position = 'relative';
+                    courseElement.innerHTML = `
+                        <a class="button" href="summary_lecturer.html?courseId=${course.id}" style="display: block;">
+                            <h2 class="course_name">${course.name}</h2>
+                            <p>Nächste Vorlesung ${formattedDate}<br /></p>
+                        </a>
+                    `;
+                    
+                    container.appendChild(courseElement);
+                });
+            }
+            
+            // Kurse beim Laden der Seite anzeigen
+            document.addEventListener('DOMContentLoaded', loadCourses);
+        </script>
     </body>
 </html>

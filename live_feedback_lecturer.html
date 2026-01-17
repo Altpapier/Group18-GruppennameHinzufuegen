@@ -6,6 +6,8 @@
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" href="assets/icon_neu.png" />
         <title>Live Feedback</title>
+        <script src="courseManager.js"></script>
+        <script src="surveyManager.js"></script>
         <script>
             function toggle() {
                 document.body.classList.toggle("light");
@@ -60,8 +62,9 @@
             <div class="popup-backdrop" id="survey-popup" style="display: none">
                 <div class="popup">
                     <h2>Umfrage starten</h2>
-
-                    <button onclick="startSurvey()">Wie ist das heutige T-Shirt?</button>
+                    <div id="surveyButtonsContainer">
+                        <!-- Umfragen werden hier dynamisch eingefügt -->
+                    </div>
                     <button class="secondary" onclick="hidePopup()">Abbrechen</button>
                 </div>
             </div>
@@ -69,4 +72,47 @@
         </main>
     </body>
     <script src="liveFeedbackLecturer.js"></script>
+    <script>
+        let currentCourseId = null;
+
+        // Dynamischen Kursnamen und Umfragen laden
+        function loadCourseData() {
+            const params = new URLSearchParams(window.location.search);
+            currentCourseId = parseInt(params.get('courseId'));
+            
+            if (currentCourseId) {
+                const course = courseManager.getCourseById(currentCourseId);
+                if (course) {
+                    document.getElementById('course-name-life-lecturer').textContent = course.name;
+                    loadSurveyButtons();
+                }
+            }
+        }
+
+        function loadSurveyButtons() {
+            const container = document.getElementById('surveyButtonsContainer');
+            const surveys = surveyManager.getSurveysByCourseId(currentCourseId);
+            
+            container.innerHTML = '';
+            
+            if (surveys.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center;">Keine Umfragen für diesen Kurs.</p>';
+                return;
+            }
+            
+            surveys.forEach(survey => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.style.cssText = 'width: 100%; padding: 10px; margin-bottom: 10px;';
+                button.textContent = survey.name;
+                button.onclick = () => {
+                    startSurvey();
+                    hidePopup();
+                };
+                container.appendChild(button);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadCourseData);
+    </script>
 </html>

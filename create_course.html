@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" href="assets/icon_neu.png" />
         <title>Create Kurs</title>
+        <script src="courseManager.js"></script>
     </head>
     <body>
         <header>
@@ -13,7 +14,7 @@
         </header>
         <main class="small-main">
             <h1>NEUER KURS</h1>
-            <form class="flex" action="edit_course.html">
+            <form class="flex" id="courseForm">
                 <label for="course_name">Titel</label>
                 <input
                     type="text"
@@ -21,6 +22,7 @@
                     id="course_name"
                     class="textinput course-text"
                     placeholder="Kursname eingeben"
+                    required
                 />
                 <label for="course_date">Datum</label>
                 <input
@@ -29,13 +31,35 @@
                     id="course_date"
                     class="textinput course-text"
                     placeholder="Kursdatum eingeben"
+                    required
                 />
 
                 <footer class="page-footer">
-                    <a class="button" href="/kurse_lecturer.html">Abbrechen</a>
+                    <a class="button" href="kurse_lecturer.html">Abbrechen</a>
                     <button id="create_course" type="submit">Kurs erstellen</button>
                 </footer>
             </form>
         </main>
+
+        <script>
+            document.getElementById('courseForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const courseName = document.getElementById('course_name').value.trim();
+                const courseDate = document.getElementById('course_date').value;
+                
+                if (courseName && courseDate) {
+                    const course = courseManager.addCourse(courseName, courseDate);
+                    if (course) {
+                        alert('Kurs erfolgreich erstellt: ' + courseName);
+                        window.location.href = 'kurse_lecturer.html';
+                    } else {
+                        alert('Fehler beim Erstellen des Kurses');
+                    }
+                } else {
+                    alert('Bitte alle Felder ausfüllen');
+                }
+            });
+        </script>
     </body>
 </html>

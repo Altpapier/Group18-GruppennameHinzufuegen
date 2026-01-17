@@ -114,6 +114,16 @@ main.student {
     align-items: center;
 }
 
+.survey-button{
+    width: 100%; 
+    min-height: 100px; 
+    display: block; 
+    padding: 0.75rem 1rem; 
+    font-size: 1.4rem; 
+    text-align: left; 
+    box-sizing: border-box; 
+    position: relative;
+}
 div.qrcode {
     display: flex;
     align-items: center;

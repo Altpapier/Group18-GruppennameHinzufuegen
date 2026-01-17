@@ -6,6 +6,9 @@
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" href="assets/icon_neu.png" />
         <title>Create Survey</title>
+        <script src="surveyManager.js"></script>
+        <script src="courseManager.js"></script>
+        <script src="createSurvey.js"></script>
     </head>
     <body>
         <header>
@@ -13,7 +16,7 @@
         </header>
         <main class="small-main">
             <h1>NEUE UMFRAGE</h1>
-            <form class="flex" action="edit_course.html">
+            <form class="flex" id="surveyForm">
                 <label for="survey_name">Umfragen Titel</label>
                 <input
                     type="text"
@@ -21,12 +24,13 @@
                     id="survey_name"
                     class="textinput course-text"
                     placeholder="Meine tolle Umfrage"
+                    required
                 />
                 <label>Bewertungsart</label>
                 <fieldset class="flex_wrap">
                     <div class="flex_wrap" style="flex: 1 1">
                         <div style="flex: 1 1 width">
-                            <input type="radio" id="thumb" name="rating_type" class="left-center" />
+                            <input type="radio" id="thumb" name="rating_type" class="left-center" checked>
                         </div>
                         <div style="flex: 1 2 width">
                             <label for="thumb">Daumen hoch/runter</label>
@@ -65,24 +69,23 @@
                         <div class="flex_wrap" style="flex: 1 1 100%">
                             <label for="custom">Custom:</label>
                         </div>
+                        <div style="display: flex; gap: 12px; align-items: center; flex: 1 1 100%; margin-bottom: 1em;">
+                            <input
+                                type="radio"
+                                id="custom-multiple"
+                                name="rating_type"
+                                value="multiple"
+                            />
+                            <label for="custom-multiple">Mehrfachauswahl</label>
+                            <input
+                                type="radio"
+                                id="custom-single"
+                                name="rating_type"
+                                value="single"
+                            />
+                            <label for="custom-single">Einfachauswahl</label>
+                        </div>
                         <div id="custom_area" style="flex: 1 1 100%; flex-direction: column">
-                            <div style="display: flex; gap: 12px; align-items: center">
-                                <input
-                                    type="radio"
-                                    id="custom-multiple"
-                                    name="rating_type"
-                                    value="multiple"
-                                    checked
-                                />
-                                <label for="custom-multiple">Mehrfachauswahl</label>
-                                <input
-                                    type="radio"
-                                    id="custom-single"
-                                    name="rating_type"
-                                    value="single"
-                                />
-                                <label for="custom-single">Einfachauswahl</label>
-                            </div>
                             <div>
                                 <label for="custom_options_container">Auswahlmöglichkeiten:</label>
                             </div>
@@ -113,59 +116,10 @@
                     </div>
                 </fieldset>
                 <footer class="page-footer">
-                    <a class="button" href="/edit_course.html">Abbrechen</a>
-                    <button id="create_course" class="bottom-center">Umfrage erstellen</button>
+                    <a class="button" href="" id="cancelBtn">Abbrechen</a>
+                    <button id="create_course" class="bottom-center" type="submit">Umfrage erstellen</button>
                 </footer>
             </form>
         </main>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const ratingRadios = document.querySelectorAll('input[name="rating_type"]');
-                const customRadio = document.getElementById("custom");
-                const customArea = document.getElementById("custom_area");
-                const addBtn = document.getElementById("add_option_btn");
-                const removeBtn = document.getElementById("remove_option_btn");
-                const optionsContainer = document.getElementById("custom_options_container");
-
-                let optionCount = 0;
-
-                function updateCustomVisibility() {
-                    customArea.style.display = customRadio.checked ? "flex" : "none";
-                }
-
-                function createOptionElement(index) {
-                    const wrapper = document.createElement("div");
-                    wrapper.className = "custom-option";
-                    const input = document.createElement("input");
-                    input.type = "text";
-                    input.name = "custom_options[]";
-                    input.placeholder = "Option " + index;
-                    input.className = "textinput course-text";
-                    wrapper.appendChild(input);
-                    return wrapper;
-                }
-
-                function addOption() {
-                    optionCount++;
-                    optionsContainer.appendChild(createOptionElement(optionCount));
-                }
-
-                function removeOption() {
-                    if (optionsContainer.children.length > 1) {
-                        optionsContainer.removeChild(optionsContainer.lastElementChild);
-                        optionCount--;
-                    }
-                }
-
-                addOption();
-
-                ratingRadios.forEach((r) => r.addEventListener("change", updateCustomVisibility));
-                addBtn.addEventListener("click", addOption);
-                removeBtn.addEventListener("click", removeOption);
-
-                updateCustomVisibility();
-            });
-        </script>
     </body>
 </html>

@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" href="assets/icon_neu.png" />
         <title>Lecturer Overview</title>
+        <script src="courseManager.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
     </head>
     <body>
@@ -13,7 +14,7 @@
             <img src="assets/titel_logo_neu.png" alt="logo" />
         </header>
         <main>
-            <h1 class="course-title">Grundlagen der Mensch-Computer-Interaktion</h1>
+            <h1 class="course-title" id="courseTitle">Grundlagen der Mensch-Computer-Interaktion</h1>
             <div style="display: grid; grid-template-columns: 50% 50%; max-height: 80%">
                 <div style="overflow-x: scroll">
                     <div class="field">
@@ -66,10 +67,10 @@
                     <canvas id="myChart"></canvas>
                 </div>
             </div>
-            <button class="right" onclick="location.href='edit_course.html';">Einstellungen</button>
+            <button class="right" onclick="goToEditCourse();">Einstellungen</button>
             <footer class="page-footer">
                 <a class="button" href="kurse_lecturer.html">Zurück</a>
-                <a class="button" href="qr.html">Kurs starten</a>
+                <a class="button" id="startCourseBtn" href="">Kurs starten</a>
             </footer>
         </main>
         <script>
@@ -112,6 +113,45 @@
                         },
                     },
                 },
+            });
+
+            // Dynamischen Kursnamen laden
+            function loadCourseName() {
+                const params = new URLSearchParams(window.location.search);
+                const courseId = parseInt(params.get('courseId'));
+                
+                if (courseId) {
+                    const course = courseManager.getCourseById(courseId);
+                    if (course) {
+                        document.getElementById('courseTitle').textContent = course.name;
+                    }
+                } else {
+                    console.log('Keine Course ID in URL gefunden');
+                }
+            }
+
+            function goToEditCourse() {
+                const params = new URLSearchParams(window.location.search);
+                const courseId = params.get('courseId');
+                if (courseId) {
+                    window.location.href = `edit_course.html?courseId=${courseId}`;
+                } else {
+                    window.location.href = 'edit_course.html';
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                loadCourseName();
+                
+                const params = new URLSearchParams(window.location.search);
+                const courseId = params.get('courseId');
+                const startBtn = document.getElementById('startCourseBtn');
+                
+                if (courseId) {
+                    startBtn.href = `live_feedback_lecturer.html?courseId=${courseId}`;
+                } else {
+                    startBtn.href = 'qr.html';
+                }
             });
         </script>
     </body>

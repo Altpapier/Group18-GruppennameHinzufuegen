@@ -6,13 +6,14 @@
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" href="assets/icon_neu.png" />
         <title>Student Overview</title>
+        <script src="courseManager.js"></script>
     </head>
     <body>
         <header>
             <img src="assets/titel_logo_neu.png" alt="logo" />
         </header>
         <main class="small-main">
-            <h1 class="course-title">Grundlagen der Mensch-Computer-Interaktion</h1>
+            <h1 class="course-title" id="courseTitle">Grundlagen der Mensch-Computer-Interaktion</h1>
             <div class="field">
                 <h2>Woche 1</h2>
                 <p><strong>Frage 1:</strong> Wie ist das heutige T-shirt?</p>
@@ -44,5 +45,22 @@
                 <a class="button" href="kurse_student.html">Zurück</a>
             </footer>
         </main>
+
+        <script>
+            // Dynamischen Kursnamen laden
+            function loadCourseName() {
+                const params = new URLSearchParams(window.location.search);
+                const courseId = parseInt(params.get('courseId'));
+                
+                if (courseId) {
+                    const course = courseManager.getCourseById(courseId);
+                    if (course) {
+                        document.getElementById('courseTitle').textContent = course.name;
+                    }
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', loadCourseName);
+        </script>
     </body>
 </html>

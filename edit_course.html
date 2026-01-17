@@ -6,21 +6,22 @@
         <link rel="stylesheet" href="style.css">
         <link rel="icon" href="assets/icon_neu.png">
         <title>Kurs editieren</title>
+        <script src="courseManager.js"></script>
+        <script src="surveyManager.js"></script>
+        <script src="editCourse.js"></script>
     </head>
     <body>
         <main class="big-main">
             <header>
                 <img src="assets/titel_logo_neu.png" class="top-left">
             </header>
-            <h1>EINSTELLUNGEN</h1>
+            <h1 id="courseTitle">EINSTELLUNGEN</h1>
             <div style="display:flex;">
                 <div style="flex:1;"> 
                     <div style="padding-right: 2em;">
                         <label style="font-size: 1.4rem;margin-bottom: 1em;">Umfragen</label>
-                        <button style="width: 100%; min-height: 100px; display: block; padding: 0.75rem 1rem; font-size: 1.4rem; text-align: left; box-sizing: border-box;">
-                            <label>Wie ist das heutige T-shirt?</label>
-                            <label style="font-weight: 400;">Umfragenart: 😀 / 😊 / 😐 / ☹️ / 😧</label>
-                        </button>
+                        <div id="surveysContainer" style="display: flex; flex-direction: column; gap: 10px;">
+                        </div>
                     </div>
                 </div>
                 <div style="flex:1;">
@@ -48,7 +49,7 @@
                                     </div>
                                 </div>
                                 <div style="display:flex; margin: 1em 0 1em 0; margin-left: auto; align-items: flex-start;">
-                                        <a class="button" href="create_survey.html" style="width: 240px; height: min-content;">Umfrage Erstellen</a>
+                                        <a class="button" href="" style="width: 240px; height: min-content;" id="createSurveyBtn">Umfrage Erstellen</a>
                                     </div>
                             </div>
                                 <div id="custom_area" style="display:flex; flex: 1 1 100%; flex-direction: column; gap:6px;">
@@ -66,63 +67,5 @@
                 <button id="create_survey" type="button" onclick="location.href='summary_lecturer.html';">zurück & speichern</button>
             </footer>
         </main>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const ratingRadios = document.querySelectorAll('input[name="rating_type"]');
-                const customRadio = document.getElementById('custom');
-                const customArea = document.getElementById('custom_area');
-                const addBtn = document.getElementById('add_option_btn');
-                const removeBtn = document.getElementById('remove_option_btn');
-                const optionsContainer = document.getElementById('custom_options_container');
-
-                let optionCount = 0;
-
-                function updateCustomVisibility() {
-                    customArea.style.display = customRadio.checked ? 'flex' : 'none';
-                }
-
-                function createOptionElement(index) {
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'custom-option';
-                    wrapper.style.display = 'flex';
-                    wrapper.style.gap = '6px';
-                    wrapper.style.alignItems = 'center';
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.style.flex = '1';
-                    checkbox.style.marginLeft = '-0.6rem';
-                    const input = document.createElement('input');
-                    input.style.flex = '8';
-                    input.type = 'text';
-                    input.name = 'custom_options';
-                    input.placeholder = 'Option ' + index;
-                    input.className = 'textinput course-text';
-                    wrapper.appendChild(checkbox);
-                    wrapper.appendChild(input);
-                    return wrapper;
-                }
-
-                function addOption() {
-                    optionCount++;
-                    optionsContainer.appendChild(createOptionElement(optionCount));
-                }
-
-                function removeOption() {
-                    if (optionsContainer.children.length > 1) {
-                        optionsContainer.removeChild(optionsContainer.lastElementChild);
-                        optionCount--;
-                    }
-                }
-                
-                addOption();
-                
-                ratingRadios.forEach(r => r.addEventListener('change', updateCustomVisibility));
-                addBtn.addEventListener('click', addOption);
-                removeBtn.addEventListener('click', removeOption);
-                
-                updateCustomVisibility();
-            });
-        </script>
     </body>
 </html>

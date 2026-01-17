@@ -2,7 +2,7 @@ const loginName = "admin";
 const loginPassword = "mysecretpassword";
 
 const dbName = "livefeedback";
-const dbUrl = `http://192.168.178.90:5984/${dbName}/`;
+const dbUrl = `http://127.0.0.1:5984/${dbName}/`;
 
 let lastFeedbackData = "";
 const request = new XMLHttpRequest();
@@ -112,7 +112,7 @@ function removeFeedback(index) {
             putReq.setRequestHeader("Content-type", "application/json");
             putReq.setRequestHeader(
                 "Authorization",
-                "Basic " + btoa(loginName + ":" + loginPassword)
+                "Basic " + btoa(loginName + ":" + loginPassword),
             );
             putReq.send(JSON.stringify(doc));
 
@@ -175,17 +175,15 @@ function displaySurvey(response) {
         document.getElementById("positive-feedback").innerText = (average * 100).toFixed() + "%";
         document.getElementById("negative-feedback").innerText =
             ((1 - average) * 100).toFixed() + "%";
-        document.getElementById(
-            "progress-fill"
-        ).outerHTML = `<div class="progress-fill" id="progress-fill" style="width: ${(
-            average * 100
-        ).toFixed()}%"></div>`;
+        document.getElementById("progress-fill").outerHTML =
+            `<div class="progress-fill" id="progress-fill" style="width: ${(
+                average * 100
+            ).toFixed()}%"></div>`;
     } else {
         document.getElementById("positive-feedback").innerText = "0%";
         document.getElementById("negative-feedback").innerText = "0%";
-        document.getElementById(
-            "progress-fill"
-        ).outerHTML = `<div class="progress-fill" id="progress-fill" style="width: 0%"></div>`;
+        document.getElementById("progress-fill").outerHTML =
+            `<div class="progress-fill" id="progress-fill" style="width: 0%"></div>`;
     }
 }
 

@@ -2,7 +2,7 @@ const loginName = "admin";
 const loginPassword = "mysecretpassword";
 
 const dbName = "livefeedback";
-const dbUrl = `http://192.168.178.90:5984/${dbName}/`;
+const dbUrl = `http://127.0.0.1:5984/${dbName}/`;
 
 const request = new XMLHttpRequest();
 const notifications = [];
@@ -38,7 +38,7 @@ request.onreadystatechange = () => {
         addNotification(
             liveFeedbackClicked
                 ? `Feedback "${typeToText[liveFeedbackClicked]}" übermittelt!`
-                : "Feedback übermittelt!"
+                : "Feedback übermittelt!",
         );
     } else if (request.responseURL === dbUrl + "showSurvey") {
         if (request.status === 200) {

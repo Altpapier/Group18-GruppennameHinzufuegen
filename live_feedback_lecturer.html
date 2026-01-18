@@ -75,7 +75,7 @@
             <div class="popup-backdrop" id="survey-popup" style="display: none">
                 <div class="popup">
                     <h2>Umfrage starten</h2>
-                    <div id="surveyButtonsContainer">
+                    <div id="surveyButtonsContainer" style="width: 100%">
                         <!-- Umfragen werden hier dynamisch eingefügt -->
                     </div>
                     <button class="secondary" onclick="hidePopup()">Abbrechen</button>
@@ -116,6 +116,7 @@
                 const button = document.createElement("button");
                 button.type = "button";
                 button.className = "button";
+                button.style.width = "100%";
                 button.textContent = survey.name;
                 button.onclick = () => {
                     startSurvey();

@@ -47,6 +47,11 @@ request.onreadystatechange = () => {
     }
 };
 
+function beenden() {
+    const courseId = window.location.search.split("courseId=")[1];
+    window.location.href = `summary_lecturer.html?courseId=${courseId}`;
+}
+
 window.addEventListener("load", async () => {
     get();
 });

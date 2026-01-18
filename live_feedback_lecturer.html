@@ -56,6 +56,7 @@
                             <h3 id="negative-feedback">58%</h3>
                         </div>
                     </div>
+
                     <div class="progress-wrapper">
                         <div class="progress" role="progressbar">
                             <div class="progress-fill" id="progress-fill" style="width: 42%"></div>
@@ -108,15 +109,13 @@
             container.innerHTML = "";
 
             if (surveys.length === 0) {
-                container.innerHTML =
-                    '<p style="color: #999; text-align: center;">Keine Umfragen für diesen Kurs.</p>';
-                return;
+                container.appendChild(document.createTextNode("Keine Umfragen erstellt."));
             }
 
             surveys.forEach((survey) => {
                 const button = document.createElement("button");
                 button.type = "button";
-                button.style.cssText = "width: 100%; padding: 10px; margin-bottom: 10px;";
+                button.className = "button";
                 button.textContent = survey.name;
                 button.onclick = () => {
                     startSurvey();

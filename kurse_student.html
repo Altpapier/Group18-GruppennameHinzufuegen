@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="style.css" />
-        <link rel="icon" href="assets/icon_neu.png" />
-        <title>Courses Student</title>
-        <script>
-            function toggle() {
-                document.body.classList.toggle("dark");
-            }
-        </script>
-    </head>
-    <body>
-        <header>
-            <a href="kurse_student.html" class="logo">
-                <img src="assets/titel_logo_neu.png" alt="logo" />
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="assets/icon_neu.png" />
+    <title>Courses Student</title>
+    <script>
+        function toggle() {
+            document.body.classList.toggle("dark");
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <a href="kurse_student.html" class="logo">
+            <img src="assets/titel_logo_neu.png" alt="logo" />
+        </a>
+    </header>
+    <main class="kurs">
+        <h1>DEINE KURSE</h1>
+        <div class="grid">
+            <a class="button" href="student_overview.html" style="padding: 1rem 1rem">
+                <h3 class="course_name">Grundlagen der Mensch-Computer-Interaktion</h3>
+                <p style="font-size: 1rem">
+                    Nächste Vorlesung: 12.1.2026<br />
+                    Bisher teilgenommen: 1/7
+                </p>
             </a>
-        </header>
-        <main class="kurs">
-            <h1>DEINE KURSE</h1>
-            <div class="grid">
-                <a class="button" href="student_overview.html" style="padding: 1rem 1rem">
-                    <h3 class="course_name">Grundlagen der Mensch-Computer-Interaktion</h3>
-                    <p style="font-size: 1rem">
-                        Nächste Vorlesung: 12.1.2026<br />
-                        Bisher teilgenommen: 1/7
-                    </p>
-                </a>
-            </div>
-            <footer class="page-footer">
-                <a class="button" href="index.html">Neuem Kurs beitreten</a>
-            </footer>
-        </main>
-    </body>
+        </div>
+        <footer class="page-footer">
+            <a class="button" href="index.html">Neuem Kurs beitreten</a>
+        </footer>
+    </main>
+</body>
+
 </html>

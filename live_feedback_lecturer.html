@@ -44,23 +44,10 @@
                 id="survey"
             >
                 <h1>UMFRAGE ÜBERSICHT</h1>
-                <fieldset style="background-color: #f0f0f0; padding: 2rem">
-                    <h2>Wie ist das heutige T-Shirt?</h2>
-                    <div style="display: flex; justify-content: center" class="overview">
-                        <div class="stat-box">
-                            <span class="emoji">👍</span>
-                            <h3 id="positive-feedback">42%</h3>
-                        </div>
-                        <div class="stat-box">
-                            <span class="emoji">👎</span>
-                            <h3 id="negative-feedback">58%</h3>
-                        </div>
-                    </div>
-
-                    <div class="progress-wrapper">
-                        <div class="progress" role="progressbar">
-                            <div class="progress-fill" id="progress-fill" style="width: 42%"></div>
-                        </div>
+                <fieldset style="background-color: #f0f0f0; padding: 2rem; min-width: 300px">
+                    <h2 id="survey-title">Umfrage</h2>
+                    <div id="survey-content">
+                        <!-- Hier kommen die Umfrage Resultate hin :D -->
                     </div>
                 </fieldset>
                 <button onclick="deleteSurvey()">Umfrage beenden</button>
@@ -119,7 +106,11 @@
                 button.style.width = "100%";
                 button.textContent = survey.name;
                 button.onclick = () => {
-                    startSurvey();
+                    startSurvey({
+                        name: survey.name,
+                        ratingType: survey.ratingType,
+                        options: survey.options || [],
+                    });
                     hidePopup();
                 };
                 container.appendChild(button);

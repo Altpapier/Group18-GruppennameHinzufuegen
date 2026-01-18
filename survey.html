@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
     <head>
         <meta charset="UTF-8" />
@@ -16,34 +16,21 @@
         <main class="small-main">
             <div class="flex">
                 <h1>UMFRAGE</h1>
-                <form action="" method="post" class="flex" style="align-items: center">
-                    <h2 id="frage">Wie ist das heutige T-Shirt?</h2>
-                    <div class="radio flex rating">
-                        <label>
-                            <input type="radio" name="smiley" id="s1" value="4" />
-                            <span>😀</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="smiley" id="s2" value="3" />
-                            <span>😊</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="smiley" id="s3" value="2" />
-                            <span>😐</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="smiley" id="s4" value="1" />
-                            <span>☹️</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="smiley" id="s5" value="0" />
-                            <span>😧<span>
-                        </label>
+                <form
+                    action=""
+                    method="post"
+                    class="flex"
+                    style="align-items: center"
+                    id="surveyForm"
+                >
+                    <h2 id="frage">Lädt...</h2>
+                    <div id="survey-options" class="rating">
+                        <!-- hier kommen die optionen hin -->
                     </div>
                 </form>
             </div>
             <footer class="page-footer">
-                <button type="submit" id="submit" class="bottom-center" onclick="set('survey')">
+                <button type="submit" id="submit" class="bottom-center" onclick="submitVote()">
                     Absenden
                 </button>
             </footer>

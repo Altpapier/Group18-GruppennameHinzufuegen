@@ -134,7 +134,7 @@ function removeFeedback(index) {
     }
 }
 
-function startSurvey() {
+function startSurvey(surveyData) {
     const checkReq = new XMLHttpRequest();
     checkReq.open("GET", dbUrl + "survey", false);
     checkReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
@@ -142,15 +142,23 @@ function startSurvey() {
 
     if (checkReq.status === 200) {
         deleteSurvey();
-        startSurvey();
+        startSurvey(surveyData);
         return;
     }
+
+    const surveyDoc = {
+        name: surveyData.name,
+        ratingType: surveyData.ratingType,
+        options: surveyData.options || [],
+        votes: [],
+        createdAt: new Date().toISOString(),
+    };
 
     const createReq = new XMLHttpRequest();
     createReq.open("PUT", dbUrl + "survey", false);
     createReq.setRequestHeader("Content-type", "application/json");
     createReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
-    createReq.send(JSON.stringify({ votes: [] }));
+    createReq.send(JSON.stringify(surveyDoc));
 
     setShowSurvey(true);
 
@@ -180,22 +188,133 @@ function displaySurvey(response) {
     console.log(response);
     document.getElementById("survey").style.display = "flex";
     document.getElementById("no-survey").style.display = "none";
-    const average = response.votes.length
-        ? response.votes.reduce((a, b) => parseInt(a) + parseInt(b)) / response.votes.length / 4
-        : 0;
-    if (response.votes.length) {
-        document.getElementById("positive-feedback").innerText = (average * 100).toFixed() + "%";
-        document.getElementById("negative-feedback").innerText =
-            ((1 - average) * 100).toFixed() + "%";
-        document.getElementById("progress-fill").outerHTML =
-            `<div class="progress-fill" id="progress-fill" style="width: ${(
-                average * 100
-            ).toFixed()}%"></div>`;
+
+    const surveyTitle = document.getElementById("survey-title");
+    const surveyContent = document.getElementById("survey-content");
+
+    surveyTitle.innerText = response.name || "Umfrage";
+
+    const ratingType = response.ratingType;
+    const votes = response.votes || [];
+
+    if (ratingType === "thumb") {
+        const positive = votes.filter((v) => v === 1 || v === "1").length;
+        const negative = votes.filter((v) => v === 0 || v === "0").length;
+        const total = positive + negative;
+        const positivePercent = total > 0 ? ((positive / total) * 100).toFixed() : 0;
+        const negativePercent = total > 0 ? ((negative / total) * 100).toFixed() : 0;
+
+        surveyContent.innerHTML = `
+            <div style="display: flex; justify-content: center" class="overview">
+                <div class="stat-box">
+                    <span class="emoji">👍</span>
+                    <h3>${positivePercent}%</h3>
+                    <small>(${positive} Stimmen)</small>
+                </div>
+                <div class="stat-box">
+                    <span class="emoji">👎</span>
+                    <h3>${negativePercent}%</h3>
+                    <small>(${negative} Stimmen)</small>
+                </div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress" role="progressbar">
+                    <div class="progress-fill" style="width: ${positivePercent}%"></div>
+                </div>
+            </div>
+        `;
+    } else if (ratingType === "smiley") {
+        const average = votes.length
+            ? votes.reduce((a, b) => parseInt(a) + parseInt(b), 0) / votes.length / 4
+            : 0;
+        const positivePercent = (average * 100).toFixed();
+        const negativePercent = ((1 - average) * 100).toFixed();
+
+        surveyContent.innerHTML = `
+            <div style="display: flex; justify-content: center" class="overview">
+                <div class="stat-box">
+                    <span class="emoji">😀</span>
+                    <h3>${positivePercent}%</h3>
+                </div>
+                <div class="stat-box">
+                    <span class="emoji">😧</span>
+                    <h3>${negativePercent}%</h3>
+                </div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress" role="progressbar">
+                    <div class="progress-fill" style="width: ${positivePercent}%"></div>
+                </div>
+            </div>
+            <p>Durchschnitt: ${votes.length ? (votes.reduce((a, b) => parseInt(a) + parseInt(b), 0) / votes.length).toFixed(1) : 0} / 4</p>
+            <p>Anzahl Stimmen: ${votes.length}</p>
+        `;
+    } else if (ratingType === "1-10-Points") {
+        const average = votes.length
+            ? votes.reduce((a, b) => parseInt(a) + parseInt(b), 0) / votes.length
+            : 0;
+        const averagePercent = ((average / 10) * 100).toFixed();
+
+        surveyContent.innerHTML = `
+            <div style="display: flex; justify-content: center; flex-direction: column; align-items: center" class="overview">
+                <div class="stat-box" style="min-width: 150px;">
+                    <span class="emoji">📊</span>
+                    <h3>${average.toFixed(1)} / 10</h3>
+                    <small>Durchschnitt</small>
+                </div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress" role="progressbar">
+                    <div class="progress-fill" style="width: ${averagePercent}%"></div>
+                </div>
+            </div>
+            <p>Anzahl Stimmen: ${votes.length}</p>
+        `;
+    } else if (ratingType === "custom-single" || ratingType === "custom-multiple") {
+        const options = response.options || [];
+        const voteCounts = {};
+
+        options.forEach((opt) => (voteCounts[opt] = 0));
+        votes.forEach((vote) => {
+            if (Array.isArray(vote)) {
+                vote.forEach((v) => {
+                    if (voteCounts[v] !== undefined) voteCounts[v]++;
+                });
+            } else {
+                if (voteCounts[vote] !== undefined) voteCounts[vote]++;
+            }
+        });
+
+        const totalVotes = votes.length;
+
+        let optionsHtml = '<div class="custom-results" style="width: 100%;">';
+        options.forEach((opt) => {
+            const count = voteCounts[opt];
+            const percent = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed() : 0;
+            optionsHtml += `
+                <div class="option-result" style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                        <span>${opt}</span>
+                        <span>${count} Stimmen (${percent}%)</span>
+                    </div>
+                    <div class="progress-wrapper">
+                        <div class="progress" role="progressbar">
+                            <div class="progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        optionsHtml += "</div>";
+
+        surveyContent.innerHTML = `
+            <p style="margin-bottom: 1rem;">Typ: ${ratingType === "custom-single" ? "Einfachauswahl" : "Mehrfachauswahl"}</p>
+            ${optionsHtml}
+            <p>Anzahl Teilnehmer: ${totalVotes}</p>
+        `;
     } else {
-        document.getElementById("positive-feedback").innerText = "0%";
-        document.getElementById("negative-feedback").innerText = "0%";
-        document.getElementById("progress-fill").outerHTML =
-            `<div class="progress-fill" id="progress-fill" style="width: 0%"></div>`;
+        // für den unwahrscheinlich fall, dass der typ for some fucking reason nicht existiert
+        surveyContent.innerHTML = `<p>Unbekannter Umfragetyp: ${ratingType}</p><p>Stimmen: ${votes.length}</p>`;
     }
 }
 

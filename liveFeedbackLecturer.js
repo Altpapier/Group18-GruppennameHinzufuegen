@@ -36,7 +36,7 @@ request.onreadystatechange = () => {
     } else if (request.responseURL === dbUrl + "onlineUsers") {
         if (request.status === 200) {
             const onlineUsers = response.onlineUsers.filter(
-                (user) => Date.now() - user.time < 10000,
+                (user) => Date.now() - user.time < 20000,
             );
             console.log(`Online users: ${onlineUsers.length}`);
             document.getElementById("participant-count").innerText = onlineUsers.length;

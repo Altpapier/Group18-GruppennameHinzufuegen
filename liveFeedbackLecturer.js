@@ -33,6 +33,17 @@ request.onreadystatechange = () => {
             console.log("No feedback document found.");
             document.getElementById("notification-container").innerHTML = "";
         }
+    } else if (request.responseURL === dbUrl + "onlineUsers") {
+        if (request.status === 200) {
+            const onlineUsers = response.onlineUsers.filter(
+                (user) => Date.now() - user.time < 10000,
+            );
+            console.log(`Online users: ${onlineUsers.length}`);
+            document.getElementById("participant-count").innerText = onlineUsers.length;
+        } else if (request.status === 404) {
+            console.log("No onlineUsers document found.");
+            document.getElementById("participant-count").innerText = "0";
+        }
     }
 };
 
@@ -45,6 +56,7 @@ const interval = setInterval(check, 1000);
 function check() {
     get("survey");
     get("feedback");
+    get("onlineUsers");
 }
 
 function displayPopup() {

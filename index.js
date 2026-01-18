@@ -27,9 +27,15 @@ request.onreadystatechange = () => {
     } else if (request.status === 200 && request.responseURL === dbUrl + "feedback") {
         const response = JSON.parse(request.responseText);
         handleSubmitLiveFeedback(response);
-    } else if (request.status === 404 && request.responseURL !== dbUrl) {
+    } else if (request.status === 200 && request.responseURL === dbUrl + "onlineUsers") {
+        const response = JSON.parse(request.responseText);
+        handleOnlineUsers(response);
+    } else if (request.status === 404 && request.responseURL === dbUrl + "feedback") {
         console.log("Document not found. Creating new document...");
         handleSubmitLiveFeedback({ _id: "feedback" });
+    } else if (request.status === 404 && request.responseURL === dbUrl + "onlineUsers") {
+        console.log("onlineUsers document not found. Creating new document...");
+        handleOnlineUsers({ _id: "onlineUsers" });
     } else if (
         request.status === 201 &&
         request.responseURL !== dbUrl &&
@@ -49,11 +55,22 @@ request.onreadystatechange = () => {
     }
 };
 
+let sessionKey = null;
 window.addEventListener("load", async () => {
     get();
+    if (localStorage.getItem("sessionKey") !== null) {
+        sessionKey = localStorage.getItem("sessionKey");
+    } else {
+        sessionKey = crypto.randomUUID();
+        localStorage.setItem("sessionKey", sessionKey);
+    }
+    get("onlineUsers");
 });
 
 const interval = setInterval(checkSurvey, 1000);
+const intervalOnlineUsers = setInterval(() => {
+    get("onlineUsers");
+}, 5000);
 
 function checkSurvey() {
     get("showSurvey");
@@ -96,6 +113,21 @@ function handleSubmitLiveFeedback(response) {
     value.push({ type: liveFeedbackClicked, time: Date.now() });
     put(response, { feedback: value });
     addNotification(`Feedback "${typeToText[liveFeedbackClicked]}" übermittelt!`);
+}
+
+function handleOnlineUsers(response) {
+    const value = response.onlineUsers ? response.onlineUsers : [];
+    if (!value.some((key) => key.sessionKey === sessionKey)) {
+        value.push({ sessionKey: sessionKey, time: Date.now() });
+    } else {
+        value.forEach((user) => {
+            if (user.sessionKey === sessionKey) {
+                user.time = Date.now();
+            }
+        });
+    }
+    put(response, { onlineUsers: value });
+    console.log("Online users updated.");
 }
 
 function get(variable = "") {

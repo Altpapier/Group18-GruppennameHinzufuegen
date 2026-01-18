@@ -120,14 +120,14 @@ main.student {
     align-items: center;
 }
 
-.survey-button{
-    width: 100%; 
-    min-height: 100px; 
-    display: block; 
-    padding: 0.75rem 1rem; 
-    font-size: 1.4rem; 
-    text-align: left; 
-    box-sizing: border-box; 
+.survey-button {
+    width: 100%;
+    min-height: 100px;
+    display: block;
+    padding: 0.75rem 1rem;
+    font-size: 1.4rem;
+    text-align: left;
+    box-sizing: border-box;
     position: relative;
 }
 div.qrcode {
@@ -174,7 +174,9 @@ form {
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    @media (max-width: 600px) { grid-template-columns: 1fr; }
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
     grid-template-rows: auto 1fr auto;
     gap: 2rem;
 }
@@ -187,7 +189,9 @@ form {
 
 button {
     background: var(--bg-light);
-    box-shadow: -3px -3px 3px 2px var(--highlight), 3px 3px 5px 2px var(--shadow),
+    box-shadow:
+        -3px -3px 3px 2px var(--highlight),
+        3px 3px 5px 2px var(--shadow),
         4px 4px 6px var(--shadow);
     border: none;
     border-radius: 25px;
@@ -206,7 +210,9 @@ button {
 
 .button {
     background: var(--bg-light);
-    box-shadow: -3px -3px 3px 2px var(--highlight), 3px 3px 5px 2px var(--shadow),
+    box-shadow:
+        -3px -3px 3px 2px var(--highlight),
+        3px 3px 5px 2px var(--shadow),
         4px 4px 6px var(--shadow);
     border: none;
     border-radius: 25px;
@@ -242,13 +248,17 @@ button p {
 button:hover {
     background: var(--bg-light);
     transform: translateY(1px);
-    box-shadow: inset 2px 3px 3px 2px var(--shadow), inset -2px -3px 3px 2px var(--highlight);
+    box-shadow:
+        inset 2px 3px 3px 2px var(--shadow),
+        inset -2px -3px 3px 2px var(--highlight);
 }
 
 .button:hover {
     background: var(--bg-light);
     transform: translateY(1px);
-    box-shadow: inset 2px 3px 3px 2px var(--shadow), inset -2px -3px 3px 2px var(--highlight);
+    box-shadow:
+        inset 2px 3px 3px 2px var(--shadow),
+        inset -2px -3px 3px 2px var(--highlight);
 }
 
 button:active {
@@ -350,7 +360,9 @@ input.textinput {
 
 input.submit {
     background: var(--bg-light);
-    box-shadow: -3px -3px 3px 2px var(--highlight), 3px 3px 5px 2px var(--shadow),
+    box-shadow:
+        -3px -3px 3px 2px var(--highlight),
+        3px 3px 5px 2px var(--shadow),
         4px 4px 6px var(--shadow);
     border: none;
     margin-top: 1em;
@@ -390,11 +402,15 @@ input.submit {
     height: 3rem;
     border-radius: 12px;
     background: var(--bg-light);
-    box-shadow: -3px -3px 3px var(--highlight), 3px 3px 5px var(--shadow);
+    box-shadow:
+        -3px -3px 3px var(--highlight),
+        3px 3px 5px var(--shadow);
 }
 
 .rating input:checked + span {
-    box-shadow: inset 3px 3px 5px var(--shadow), inset -2px -2px 3px var(--highlight);
+    box-shadow:
+        inset 3px 3px 5px var(--shadow),
+        inset -2px -2px 3px var(--highlight);
     font-weight: 700;
 }
 
@@ -505,7 +521,9 @@ input.submit {
     padding: 0.75rem 1rem;
     border-radius: 12px;
     border: none;
-    box-shadow: -2px -2px 4px var(--highlight), 2px 2px 6px var(--shadow);
+    box-shadow:
+        -2px -2px 4px var(--highlight),
+        2px 2px 6px var(--shadow);
     cursor: pointer;
 }
 
@@ -583,4 +601,25 @@ input.submit {
 .select-10 > span.selected {
     border: black solid 1px;
     background-color: aquamarine;
+}
+
+.participation-box {
+    gap: 3rem;
+    align-items: center;
+}
+
+.participation {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.participation-img {
+    height: 4rem;
+    width: auto;
+}
+
+.participation-count {
+    font-size: 2rem;
+    font-weight: bold;
 }

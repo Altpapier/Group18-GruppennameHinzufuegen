@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
     <head>
         <meta charset="UTF-8" />
@@ -23,7 +23,19 @@
                 >Grundlagen der Mensch-Computer-Interaktion</label
             >
             <div class="title-and-start-survey" name="title-and-start-survey">
-                <button class="start-survey-btn" onclick="displayPopup()">Umfrage starten</button>
+                <div class="start-survey-btn flex_wrap participation-box">
+                    <div class="participation">
+                        <img
+                            src="assets/users-267.svg"
+                            class="participation-img"
+                            alt="Participants"
+                        />
+                        <span id="participant-count" class="participation-count">0</span>
+                    </div>
+                    <button class="start-survey-btn" onclick="displayPopup()">
+                        Umfrage starten
+                    </button>
+                </div>
             </div>
             <div
                 class="flex"
@@ -78,32 +90,33 @@
         // Dynamischen Kursnamen und Umfragen laden
         function loadCourseData() {
             const params = new URLSearchParams(window.location.search);
-            currentCourseId = parseInt(params.get('courseId'));
-            
+            currentCourseId = parseInt(params.get("courseId"));
+
             if (currentCourseId) {
                 const course = courseManager.getCourseById(currentCourseId);
                 if (course) {
-                    document.getElementById('course-name-life-lecturer').textContent = course.name;
+                    document.getElementById("course-name-life-lecturer").textContent = course.name;
                     loadSurveyButtons();
                 }
             }
         }
 
         function loadSurveyButtons() {
-            const container = document.getElementById('surveyButtonsContainer');
+            const container = document.getElementById("surveyButtonsContainer");
             const surveys = surveyManager.getSurveysByCourseId(currentCourseId);
-            
-            container.innerHTML = '';
-            
+
+            container.innerHTML = "";
+
             if (surveys.length === 0) {
-                container.innerHTML = '<p style="color: #999; text-align: center;">Keine Umfragen für diesen Kurs.</p>';
+                container.innerHTML =
+                    '<p style="color: #999; text-align: center;">Keine Umfragen für diesen Kurs.</p>';
                 return;
             }
-            
-            surveys.forEach(survey => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.style.cssText = 'width: 100%; padding: 10px; margin-bottom: 10px;';
+
+            surveys.forEach((survey) => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.style.cssText = "width: 100%; padding: 10px; margin-bottom: 10px;";
                 button.textContent = survey.name;
                 button.onclick = () => {
                     startSurvey();
@@ -113,6 +126,6 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', loadCourseData);
+        document.addEventListener("DOMContentLoaded", loadCourseData);
     </script>
 </html>

@@ -1,4 +1,3 @@
-// Custom Options Handler
 document.addEventListener('DOMContentLoaded', function () {
     const ratingRadios = document.querySelectorAll('input[name="rating_type"]');
     const customRadio = document.getElementById('custom');
@@ -53,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
     removeBtn.addEventListener('click', removeOption);
     
     updateCustomVisibility();
+    
+    loadCourseName();
 });
 
 function loadCourseName() {
@@ -81,9 +82,18 @@ function loadSurveys(courseId) {
     }
     
     surveys.forEach(survey => {
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.justifyContent = 'space-between';
+        wrapper.style.alignItems = 'center';
+        wrapper.style.gap = '1rem';
+        
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'survey-button';
+        button.style.flex = '1';
+        button.dataset.surveyId = survey.id;
+        button.onclick = () => onSurveyClick(survey.id);
 
         const ratingTypeText = getRatingTypeText(survey.ratingType);
         button.innerHTML = `
@@ -91,7 +101,26 @@ function loadSurveys(courseId) {
             <label style="font-weight: 400;">Umfragenart: ${ratingTypeText}</label>
         `;
         
-        container.appendChild(button);
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.title = 'Umfrage löschen';
+        deleteBtn.onclick = (event) => deleteSurvey(event, survey.id);
+        deleteBtn.style.padding = '0.5rem';
+        deleteBtn.style.minWidth = '2.5rem';
+        deleteBtn.style.height = '2.5rem';
+        deleteBtn.style.border = 'none';
+        deleteBtn.style.background = 'transparent';
+        deleteBtn.style.cursor = 'pointer';
+        deleteBtn.style.fontSize = '1.5rem';
+        deleteBtn.style.display = 'flex';
+        deleteBtn.style.alignItems = 'center';
+        deleteBtn.style.justifyContent = 'center';
+        
+        wrapper.appendChild(button);
+        wrapper.appendChild(deleteBtn);
+        container.appendChild(wrapper);
     });
 }
 
@@ -112,4 +141,14 @@ function deleteSurvey(event, surveyId) {
         loadSurveys(courseId);
 }
 
+function onSurveyClick(surveyId) {
+    console.log('Umfrage angeklickt mit ID:', surveyId);
+    const survey = surveyManager.getSurveyById(surveyId);
+    if (survey) {
+        console.log('Umfrage:', survey);
+        window.location.href = `create_survey.html?courseId=${survey.courseId}&surveyId=${survey.id}`;
+    }else{
+        console.error('Umfrage nicht gefunden');
+    }
+}
 document.addEventListener('DOMContentLoaded', loadCourseName);

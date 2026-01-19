@@ -6,6 +6,7 @@
     --highlight: hsl(0, 0%, 100%);
     --text: hsl(0, 0%, 0%);
     --text-light: hsl(0, 0%, 10%);
+    --select-highlight: hsl(145, 100%, 64%);
 }
 
 body.dark {
@@ -16,6 +17,7 @@ body.dark {
     --highlight: hsl(0, 0%, 25%);
     --text: hsl(0, 0%, 90%);
     --text-light: hsl(0, 0%, 100%);
+    --select-highlight: hsl(145, 81%, 39%);
 }
 
 body.transition * {
@@ -606,7 +608,7 @@ input.submit {
 
 .select-10 > span.selected {
     border: black solid 1px;
-    background-color: aquamarine;
+    background-color: var(--select-highlight);
 }
 
 .participation-box {

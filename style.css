@@ -622,6 +622,14 @@ input.submit {
     gap: 1rem;
 }
 
+body:not(.dark) .participation-img.dark {
+    display: none;
+}
+
+body.dark .participation-img:not(.dark) {
+    display: none;
+}
+
 .participation-img {
     height: 4rem;
     width: auto;

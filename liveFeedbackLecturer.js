@@ -5,6 +5,7 @@ const dbName = "livefeedback";
 const dbUrl = `http://127.0.0.1:5984/${dbName}/`;
 
 let lastFeedbackData = "";
+let isRemovingFeedback = false;
 const request = new XMLHttpRequest();
 request.onreadystatechange = () => {
     if (request.readyState !== 4) return; // only run when request is done
@@ -27,7 +28,7 @@ request.onreadystatechange = () => {
             displayNoSurvey();
         }
     } else if (request.responseURL === dbUrl + "feedback") {
-        if (request.status === 200) {
+        if (request.status === 200 || response.status === 304) {
             displayFeedback(response);
         } else if (request.status === 404) {
             console.log("No feedback document found.");
@@ -60,7 +61,9 @@ const interval = setInterval(check, 1000);
 
 function check() {
     get("survey");
-    get("feedback");
+    if (!isRemovingFeedback) {
+        get("feedback");
+    }
     get("onlineUsers");
 }
 
@@ -82,38 +85,71 @@ const typeToText = {
 };
 
 function displayFeedback(response) {
+    if (isRemovingFeedback) return;
+
     const feedbackList = response.feedback || [];
-    const currentData = JSON.stringify(feedbackList);
+    const feedbackIds = feedbackList.map((item) => item.time).join(",");
 
-    if (currentData !== lastFeedbackData) {
-        lastFeedbackData = currentData;
-        const container = document.getElementById("notification-container");
-        container.innerHTML = "";
+    if (feedbackIds !== lastFeedbackData) {
+        lastFeedbackData = feedbackIds;
+        renderFeedbackList(feedbackList);
+    } else {
+        updateFeedbackTimes(feedbackList);
+    }
+}
 
-        feedbackList.forEach((item, index) => {
-            const timeDiff = Date.now() - item.time;
-            const minutes = Math.floor(timeDiff / 60000);
-            const timeString = minutes <= 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
+function renderFeedbackList(feedbackList) {
+    const container = document.getElementById("notification-container");
+    container.innerHTML = "";
 
-            const box = document.createElement("div");
-            box.className = "notification-box";
-            box.innerHTML = `
+    [...feedbackList].reverse().forEach((item) => {
+        const timeDiff = Date.now() - item.time;
+        const minutes = Math.floor(timeDiff / 60000);
+        const timeString = minutes <= 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
+        if (timeDiff > 15 * 60000) return;
+
+        const box = document.createElement("div");
+        box.className = "notification-box";
+        box.setAttribute("data-timestamp", item.time);
+        box.innerHTML = `
                 <div class="notification-content">
                     <span class="notification-type">${typeToText[item.type]}</span>
                     <span class="notification-time">${timeString}</span>
                 </div>
-                <button class="close-btn" onclick="removeFeedback(${index})">✕</button>
+                <button class="close-btn" onclick="removeFeedback(${item.time})">✕</button>
             `;
-            container.appendChild(box);
-        });
-    }
+        container.appendChild(box);
+    });
+}
+
+function updateFeedbackTimes(feedbackList) {
+    feedbackList.forEach((item) => {
+        const box = document.querySelector(`.notification-box[data-timestamp="${item.time}"]`);
+        if (box) {
+            const timeDiff = Date.now() - item.time;
+            const minutes = Math.floor(timeDiff / 60000);
+            const timeString = minutes <= 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
+            const timeSpan = box.querySelector(".notification-time");
+            if (timeSpan) timeSpan.textContent = timeString;
+
+            // Entferne alte Notifications die älter als 15 min sind
+            if (timeDiff > 15 * 60000) {
+                box.remove();
+            }
+        }
+    });
 }
 
 function n(string, length) {
     return length === 1 ? string : string + "n";
 }
 
-function removeFeedback(index) {
+function removeFeedback(timestamp) {
+    isRemovingFeedback = true;
+
+    const box = document.querySelector(`.notification-box[data-timestamp="${timestamp}"]`);
+    if (box) box.remove();
+
     const getReq = new XMLHttpRequest();
     getReq.open("GET", dbUrl + "feedback", false);
     getReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
@@ -121,7 +157,8 @@ function removeFeedback(index) {
 
     if (getReq.status === 200) {
         const doc = JSON.parse(getReq.responseText);
-        if (doc.feedback && doc.feedback[index]) {
+        const index = doc.feedback?.findIndex((item) => item.time === timestamp);
+        if (index !== -1 && index !== undefined) {
             doc.feedback.splice(index, 1);
 
             const putReq = new XMLHttpRequest();
@@ -133,10 +170,11 @@ function removeFeedback(index) {
             );
             putReq.send(JSON.stringify(doc));
 
-            lastFeedbackData = "";
-            get("feedback");
+            lastFeedbackData = doc.feedback.map((item) => item.time).join(",");
         }
     }
+
+    isRemovingFeedback = false;
 }
 
 function startSurvey(surveyData) {

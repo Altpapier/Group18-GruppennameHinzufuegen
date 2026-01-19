@@ -20,13 +20,13 @@ body.dark {
     --select-highlight: hsl(145, 81%, 39%);
 }
 
-body * {
+body *, body {
     box-sizing: border-box;
     text-rendering: optimizeLegibility;
     transition: background-color 0.5s linear, color 0.5s linear, box-shadow 0.5s linear;
 }
 
-body:not(.transition) * {
+body:not(.transition) *, body:not(.transition) {
   transition: none !important;
 }
 

@@ -8,10 +8,34 @@
         <title>Lecturer Overview</title>
         <script src="courseManager.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+        <script>
+            window.onload = function() {
+                if (localStorage.getItem("body-dark") == "true") {
+                    document.body.classList.add("dark");
+                }
+            };
+            
+            function toggle() {
+                document.body.classList.add("transition");
+                document.body.classList.toggle("dark");
+                localStorage.setItem("body-dark", document.body.classList.contains("dark")? "true":"false");
+            }
+        </script>
     </head>
     <body>
         <header>
             <img src="assets/titel_logo_neu.png" alt="logo" />
+            <div id="darkmode-toggle" class="light" onClick="toggle();">
+                <div class="big">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="small"></div>
+                <div class="small"></div>
+                <div class="small"></div>
+
+            </div>
         </header>
         <main>
             <h1 class="course-title" id="courseTitle">Grundlagen der Mensch-Computer-Interaktion</h1>

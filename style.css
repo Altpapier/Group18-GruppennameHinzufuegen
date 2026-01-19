@@ -295,12 +295,6 @@ button.secondary {
     right: 0%;
 }
 
-.center {
-    bottom: 50%;
-    right: 50%;
-    transform: translate(50%, 50%);
-}
-
 .left-center {
     left: 0%;
     transform: translate(0%, 50%);

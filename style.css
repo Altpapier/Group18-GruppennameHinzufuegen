@@ -20,7 +20,7 @@ body.dark {
     --select-highlight: hsl(145, 81%, 39%);
 }
 
-body.transition * {
+body * {
     box-sizing: border-box;
     text-rendering: optimizeLegibility;
     transition: background-color 0.5s linear, color 0.5s linear, box-shadow 0.5s linear;

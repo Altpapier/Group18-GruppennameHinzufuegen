@@ -27,7 +27,7 @@ request.onreadystatechange = () => {
             displayNoSurvey();
         }
     } else if (request.responseURL === dbUrl + "feedback") {
-        if (request.status === 200) {
+        if (request.status === 200 || response.status === 304) {
             displayFeedback(response);
         } else if (request.status === 404) {
             console.log("No feedback document found.");
@@ -85,28 +85,27 @@ function displayFeedback(response) {
     const feedbackList = response.feedback || [];
     const currentData = JSON.stringify(feedbackList);
 
-    if (currentData !== lastFeedbackData) {
-        lastFeedbackData = currentData;
-        const container = document.getElementById("notification-container");
-        container.innerHTML = "";
+    lastFeedbackData = currentData;
+    const container = document.getElementById("notification-container");
+    container.innerHTML = "";
 
-        feedbackList.forEach((item, index) => {
-            const timeDiff = Date.now() - item.time;
-            const minutes = Math.floor(timeDiff / 60000);
-            const timeString = minutes <= 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
+    feedbackList.reverse().forEach((item, index) => {
+        const timeDiff = Date.now() - item.time;
+        const minutes = Math.floor(timeDiff / 60000);
+        const timeString = minutes <= 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
+        if (timeDiff > 15 * 60000) return; // nur feedback der letzten 15 minuten anzeigen
 
-            const box = document.createElement("div");
-            box.className = "notification-box";
-            box.innerHTML = `
+        const box = document.createElement("div");
+        box.className = "notification-box";
+        box.innerHTML = `
                 <div class="notification-content">
                     <span class="notification-type">${typeToText[item.type]}</span>
                     <span class="notification-time">${timeString}</span>
                 </div>
                 <button class="close-btn" onclick="removeFeedback(${index})">✕</button>
             `;
-            container.appendChild(box);
-        });
-    }
+        container.appendChild(box);
+    });
 }
 
 function n(string, length) {

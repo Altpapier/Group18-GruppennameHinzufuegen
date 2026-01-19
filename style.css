@@ -447,16 +447,6 @@ input.submit {
     display: none;
 }
 
-/* Emoji size */
-.emoji {
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    line-height: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 0.5rem;
-}
-
 .stat-box {
     flex: 1 1;
     margin: 2em;
@@ -465,12 +455,6 @@ input.submit {
     align-items: center;
     justify-content: center;
     text-align: center;
-}
-
-.emoji {
-    font-size: 3rem;
-    display: block;
-    margin: 0 auto;
 }
 
 /* Progressbar styles */

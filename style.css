@@ -86,15 +86,7 @@ footer {
 }
 
 .landing {
-    margin-top: 0;
-}
-
-.course-text {
-    padding: 0.5rem 1rem;
-    border-radius: 12px;
-    border: 2px solid var(--shadow);
-    background: var(--bg-light);
-    color: var(--text);
+    padding-top: 2rem;
 }
 
 header img {
@@ -137,6 +129,7 @@ main.student {
     box-sizing: border-box;
     position: relative;
 }
+
 div.qrcode {
     display: flex;
     align-items: center;
@@ -211,9 +204,6 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /*transition:
-    transform 0.15s cubic-bezier(.4,0,.2,1),
-    box-shadow 0.15s cubic-bezier(.4,0,.2,1);*/
 }
 
 .button {
@@ -232,15 +222,12 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /*transition:
-    transform 0.15s cubic-bezier(.4,0,.2,1),
-    box-shadow 0.15s cubic-bezier(.4,0,.2,1);*/
     text-decoration: none;
 }
 
 button span {
     margin-top: 0.5rem;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
 }
 
 .button span {
@@ -291,33 +278,14 @@ button.secondary {
     border: 2px solid var(--shadow);
 }
 
-.top-left {
-    position: absolute;
-    top: 0em;
-    left: 0em;
-}
-
 .top-left-Titel {
     position: absolute;
     top: 7rem;
     left: 1em;
 }
 
-.bottom-right {
-    position: absolute;
-    bottom: 1em;
-    right: 1em;
-}
-
-.top-center {
-    position: absolute;
-    top: 1em;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-
 .feedback {
-    padding: 1rem 1rem;
+    padding: 1rem 0.5rem;
     font-size: 1rem;
     min-width: 180px;
 }
@@ -359,10 +327,14 @@ label {
     font-size: 1.25rem;
 }
 
-input.textinput {
+.textinput {
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
     width: 100%;
     font-weight: 700;
     font-size: 1.25rem;
+    border: 2px solid var(--shadow);
+    background: var(--bg-light);
     color: var(--text);
 }
 
@@ -496,27 +468,6 @@ input.submit {
 .title-and-start-survey .start-survey-btn {
     margin-left: auto;
     min-width: 160px;
-}
-
-/* Floating bottom-right element */
-.floating-bottom-right {
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    z-index: 3000;
-    margin: 10em;
-    display: none;
-}
-.floating-bottom-right .floating-btn {
-    background: var(--bg-light);
-    color: var(--text);
-    padding: 0.75rem 1rem;
-    border-radius: 12px;
-    border: none;
-    box-shadow:
-        -2px -2px 4px var(--highlight),
-        2px 2px 6px var(--shadow);
-    cursor: pointer;
 }
 
 .notification-container {

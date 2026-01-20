@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
     <head>
         <meta charset="UTF-8" />
@@ -7,16 +7,19 @@
         <link rel="icon" href="assets/icon_neu.png" />
         <title>Live Feedback</title>
         <script>
-            window.onload = function() {
+            window.onload = function () {
                 if (localStorage.getItem("body-dark") == "true") {
                     document.body.classList.add("dark");
                 }
             };
-            
+
             function toggle() {
                 document.body.classList.add("transition");
                 document.body.classList.toggle("dark");
-                localStorage.setItem("body-dark", document.body.classList.contains("dark")? "true":"false");
+                localStorage.setItem(
+                    "body-dark",
+                    document.body.classList.contains("dark") ? "true" : "false",
+                );
             }
         </script>
     </head>
@@ -34,7 +37,6 @@
                 <div class="small"></div>
                 <div class="small"></div>
                 <div class="small"></div>
-
             </div>
         </header>
         <main class="student">
@@ -51,32 +53,58 @@
                     <button
                         class="feedback"
                         data-type="problem"
+                        id="problem"
                         onclick="set('feedback', 'problem')"
                     >
                         👎<span>Verständnisproblem</span>
                         <p>bitte nochmal erklären</p>
                     </button>
-                    <button class="feedback" data-type="good" onclick="set('feedback', 'good')">
+                    <button
+                        class="feedback"
+                        data-type="good"
+                        id="good"
+                        onclick="set('feedback', 'good')"
+                    >
                         👍<span>Verstanden</span>
                         <p>kann weiter gehen</p>
                     </button>
                 </div>
                 <div class="flex_wrap">
-                    <button class="feedback" data-type="fast" onclick="set('feedback', 'fast')">
+                    <button
+                        class="feedback"
+                        data-type="fast"
+                        id="fast"
+                        onclick="set('feedback', 'fast')"
+                    >
                         🏃‍♂️<span>Zu Schnell</span>
                         <p>bitte langsamer</p>
                     </button>
-                    <button class="feedback" data-type="slow" onclick="set('feedback', 'slow')">
+                    <button
+                        class="feedback"
+                        data-type="slow"
+                        id="slow"
+                        onclick="set('feedback', 'slow')"
+                    >
                         🐌<span>Zu Langsam</span>
                         <p>bitte schneller</p>
                     </button>
                 </div>
                 <div class="flex_wrap">
-                    <button class="feedback" data-type="loud" onclick="set('feedback', 'loud')">
+                    <button
+                        class="feedback"
+                        data-type="loud"
+                        id="loud"
+                        onclick="set('feedback', 'loud')"
+                    >
                         🔊<span>Zu Laut</span>
                         <p>bitte leiser</p>
                     </button>
-                    <button class="feedback" data-type="silent" onclick="set('feedback', 'silent')">
+                    <button
+                        class="feedback"
+                        data-type="silent"
+                        id="silent"
+                        onclick="set('feedback', 'silent')"
+                    >
                         🔈<span>Zu Leise</span>
                         <p>bitte lauter</p>
                     </button>

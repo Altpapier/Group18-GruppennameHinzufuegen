@@ -154,6 +154,14 @@ function set(name, type) {
     request.withCredentials = true;
     request.send();
     liveFeedbackClicked = type;
+    if (type) {
+        // set button to not clickable for 7.5 seconds
+        document.getElementById(type).classList.add("feedback-clicked");
+        console.log("Button clicked:", name);
+        setTimeout(() => {
+            document.getElementById(type).classList.remove("feedback-clicked");
+        }, 7500);
+    }
 }
 
 function createDB() {

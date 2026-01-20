@@ -73,6 +73,56 @@ function check() {
     get("onlineUsers");
 }
 
+function sendJumpscare() {
+    const checkReq = new XMLHttpRequest();
+    checkReq.open("GET", dbUrl + "jumpscare", false);
+    checkReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
+    checkReq.send();
+
+    if (checkReq.status === 200) {
+        deleteJumpscare();
+        sendJumpscare();
+        return;
+    }
+
+    const jumpscareDoc = {
+        createdAt: Date.now(),
+        type: document.getElementById("jumpscare-type").value,
+        audio: document.getElementById("jumpscare-audio").value,
+    };
+
+    const createReq = new XMLHttpRequest();
+    createReq.open("PUT", dbUrl + "jumpscare", false);
+    createReq.setRequestHeader("Content-type", "application/json");
+    createReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
+    createReq.send(JSON.stringify(jumpscareDoc));
+
+    hideJumpscarePopup();
+}
+
+function deleteJumpscare() {
+    const getReq = new XMLHttpRequest();
+    getReq.open("GET", dbUrl + "jumpscare", false);
+    getReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
+    getReq.send();
+
+    if (getReq.status !== 200) return;
+
+    const response = JSON.parse(getReq.responseText);
+    const req = new XMLHttpRequest();
+    req.open("DELETE", dbUrl + "jumpscare?rev=" + response._rev, false);
+    req.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
+    req.send();
+}
+
+function displayJumpscarePopup() {
+    document.getElementById("jumpscare-popup").style.display = "flex";
+}
+
+function hideJumpscarePopup() {
+    document.getElementById("jumpscare-popup").style.display = "none";
+}
+
 function displayPopup() {
     document.getElementById("survey-popup").style.display = "flex";
 }

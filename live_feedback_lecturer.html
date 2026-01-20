@@ -44,7 +44,10 @@
                 Grundlagen der Mensch-Computer-Interaktion
             </label>
             <div class="title-and-start-survey" name="title-and-start-survey">
-                <div class="start-survey-btn flex_wrap participation-box">
+                <div
+                    class="start-survey-btn flex_wrap participation-box"
+                    style="align-items: flex-start"
+                >
                     <div class="participation">
                         <img
                             src="assets/users-dark.svg"
@@ -58,9 +61,18 @@
                         />
                         <span id="participant-count" class="participation-count">0</span>
                     </div>
-                    <button class="start-survey-btn" onclick="displayPopup()">
-                        Umfrage starten
-                    </button>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem">
+                        <button class="start-survey-btn" onclick="displayPopup()" style="margin: 0">
+                            Umfrage starten
+                        </button>
+                        <button
+                            class="button"
+                            style="min-width: 160px; margin-top: 1rem"
+                            onclick="displayJumpscarePopup()"
+                        >
+                            Jumpscare
+                        </button>
+                    </div>
                 </div>
             </div>
             <div
@@ -94,7 +106,32 @@
                     <button class="secondary" onclick="hidePopup()">Abbrechen</button>
                 </div>
             </div>
-            <div id="notification-container" class="notification-container"></div>
+            <div class="popup-backdrop" id="jumpscare-popup" style="display: none">
+                <div class="popup">
+                    <h2>Jumpscare auswählen</h2>
+                    <h3>Bild:</h3>
+                    <select id="jumpscare-type">
+                        <option value="katze" selected>Katze</option>
+                        <option value="bitti" selected>Bitti Bitti Hamster</option>
+                        <option value="gesicht">Gesicht</option>
+                        <option value="kurt">Kurt</option>
+                    </select>
+                    <h3>Audio:</h3>
+                    <select id="jumpscare-audio">
+                        <option value="metal-pipe" selected>Metall Rohr</option>
+                        <option value="hamster" selected>Hamster</option>
+                    </select>
+                    <button class="button" style="margin-top: 2rem" onclick="sendJumpscare()">
+                        Absenden
+                    </button>
+                    <button class="secondary" onclick="hideJumpscarePopup()">Abbrechen</button>
+                </div>
+            </div>
+            <div
+                id="notification-container"
+                class="notification-container"
+                style="top: 19rem"
+            ></div>
             <div class="shortcut-hint">
                 <p><strong>Shortcuts:</strong></p>
                 <p><kbd>x</kbd> Löscht älteste</p>

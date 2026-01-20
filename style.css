@@ -402,6 +402,40 @@ label {
     color: var(--text);
 }
 
+select {
+    background-color: var(--bg-light);
+    background-image: url("./assets/chevron-light.svg");
+    background-repeat: no-repeat;
+    background-position: right 1.5rem center;
+    background-size: 1rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow:
+        -3px -3px 3px 2px var(--highlight),
+        3px 3px 5px 2px var(--shadow),
+        4px 4px 6px var(--shadow);
+    border: none;
+    border-radius: 25px;
+    padding: 1rem 3.5rem 1rem 2rem;
+    min-width: 200px;
+    font-size: 1.25rem;
+    color: var(--text);
+    cursor: pointer;
+}
+
+body.dark select {
+    background-image: url("./assets/chevron-dark.svg");
+}
+
+select:hover {
+    background-color: var(--bg-light);
+    transform: translateY(1px);
+    box-shadow:
+        inset 2px 3px 3px 2px var(--shadow),
+        inset -2px -3px 3px 2px var(--highlight);
+}
+
 input.submit {
     background: var(--bg-light);
     box-shadow:
@@ -825,4 +859,32 @@ body.dark #darkmode-toggle div.big {
     left: 3.2em;
     background-color: white;
     border: solid 0.1em lightgrey;
+}
+
+#fullscreen-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#fullscreen-overlay.hidden {
+    display: none;
+}
+
+#fullscreen-overlay img {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+}
+
+.full-img {
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+    min-width: 100%;
 }

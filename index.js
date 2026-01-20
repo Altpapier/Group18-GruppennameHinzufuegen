@@ -27,6 +27,9 @@ request.onreadystatechange = () => {
     } else if (request.status === 200 && request.responseURL === dbUrl + "feedback") {
         const response = JSON.parse(request.responseText);
         handleSubmitLiveFeedback(response);
+    } else if (request.status === 200 && request.responseURL === dbUrl + "jumpscare") {
+        const response = JSON.parse(request.responseText);
+        jumpscareHandler(response);
     } else if (request.status === 200 && request.responseURL === dbUrl + "onlineUsers") {
         const response = JSON.parse(request.responseText);
         handleOnlineUsers(response);
@@ -55,6 +58,39 @@ request.onreadystatechange = () => {
     }
 };
 
+const FLACKER_DURATION = 100; // 0.1 seconds
+
+let jumpscareBeingHandled = false;
+function jumpscareHandler(response) {
+    let JUMPSCARE_DURATION = 3 * 1000; // default 3 seconds
+    if (response.audio === "hamster") JUMPSCARE_DURATION = 10 * 1000; // 10 seconds for hamster sound
+    const showFor = response.createdAt + JUMPSCARE_DURATION - Date.now();
+    if (showFor <= 0 || jumpscareBeingHandled) return;
+    jumpscareBeingHandled = true;
+    document.getElementById("jumpscare-image").src = `assets/${response.type}.jpg`;
+    setTimeout(() => {
+        document.getElementById("jumpscare-image").src = `assets/${response.type}-flacker.jpg`;
+    }, FLACKER_DURATION);
+    document.getElementById("fullscreen-overlay").classList.toggle("hidden");
+
+    const audio = new Audio(`assets/${response.audio}.mp3`);
+    audio.play();
+
+    const interval = setInterval(() => {
+        document.getElementById("jumpscare-image").src = `assets/${response.type}.jpg`;
+        setTimeout(() => {
+            document.getElementById("jumpscare-image").src = `assets/${response.type}-flacker.jpg`;
+        }, FLACKER_DURATION);
+    }, 2 * FLACKER_DURATION);
+
+    setTimeout(() => {
+        document.getElementById("jumpscare-image").src = "";
+        document.getElementById("fullscreen-overlay").classList.toggle("hidden");
+        jumpscareBeingHandled = false;
+        clearInterval(interval);
+    }, showFor);
+}
+
 let sessionKey = null;
 window.addEventListener("load", async () => {
     get();
@@ -74,6 +110,7 @@ const intervalOnlineUsers = setInterval(() => {
 
 function checkSurvey() {
     get("showSurvey");
+    get("jumpscare");
 }
 
 function addNotification(message) {

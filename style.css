@@ -158,6 +158,10 @@ h1 {
     color: var(--text-light);
 }
 
+.course-title {
+    text-align: center;
+}
+
 form {
     flex: 1;
 }

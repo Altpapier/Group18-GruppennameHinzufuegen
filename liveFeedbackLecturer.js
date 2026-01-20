@@ -53,8 +53,14 @@ function beenden() {
     window.location.href = `summary_lecturer.html?courseId=${courseId}`;
 }
 
+const startTime = Date.now();
+let showSessionStarted = true;
+let sessionStartedChanged = false;
 window.addEventListener("load", async () => {
     get();
+    setTimeout(() => {
+        showSessionStarted = false;
+    }, 10000);
 });
 
 const interval = setInterval(check, 1000);
@@ -90,8 +96,9 @@ function displayFeedback(response) {
     const feedbackList = response.feedback || [];
     const feedbackIds = feedbackList.map((item) => item.time).join(",");
 
-    if (feedbackIds !== lastFeedbackData) {
+    if (feedbackIds !== lastFeedbackData || (!sessionStartedChanged && !showSessionStarted)) {
         lastFeedbackData = feedbackIds;
+        if (!showSessionStarted) sessionStartedChanged = true;
         renderFeedbackList(feedbackList);
     } else {
         updateFeedbackTimes(feedbackList);
@@ -102,7 +109,15 @@ function renderFeedbackList(feedbackList) {
     const container = document.getElementById("notification-container");
     container.innerHTML = "";
 
-    [...feedbackList].reverse().forEach((item) => {
+    const list = [...feedbackList];
+    if (showSessionStarted) {
+        list.push({
+            type: "Sitzung gestartet",
+            time: startTime,
+        });
+    }
+
+    list.reverse().forEach((item) => {
         const timeDiff = Date.now() - item.time;
         const minutes = Math.floor(timeDiff / 60000);
         const timeString = minutes <= 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
@@ -113,7 +128,7 @@ function renderFeedbackList(feedbackList) {
         box.setAttribute("data-timestamp", item.time);
         box.innerHTML = `
                 <div class="notification-content">
-                    <span class="notification-type">${typeToText[item.type]}</span>
+                    <span class="notification-type">${typeToText[item.type] || item.type}</span>
                     <span class="notification-time">${timeString}</span>
                 </div>
                 <button class="close-btn" onclick="removeFeedback(${item.time})">✕</button>

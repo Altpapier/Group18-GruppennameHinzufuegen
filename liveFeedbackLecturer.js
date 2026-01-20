@@ -242,6 +242,10 @@ function setShowSurvey(value) {
     setShowReq.send(JSON.stringify(showData));
 }
 
+function formatNumber(num, decimals = 1) {
+    return Number.isInteger(num) ? num.toString() : num.toFixed(decimals);
+}
+
 function displaySurvey(response) {
     console.log(response);
     document.getElementById("survey").style.display = "flex";
@@ -264,15 +268,15 @@ function displaySurvey(response) {
 
         surveyContent.innerHTML = `
             <div style="display: flex; justify-content: center" class="overview">
+            <div class="stat-box">
+                    <span class="emoji">👎</span>
+                    <h3>${negativePercent}%</h3>
+                    <small>(${negative} Stimmen)</small>
+                </div>
                 <div class="stat-box">
                     <span class="emoji">👍</span>
                     <h3>${positivePercent}%</h3>
                     <small>(${positive} Stimmen)</small>
-                </div>
-                <div class="stat-box">
-                    <span class="emoji">👎</span>
-                    <h3>${negativePercent}%</h3>
-                    <small>(${negative} Stimmen)</small>
                 </div>
             </div>
             <div class="progress-wrapper">
@@ -286,17 +290,17 @@ function displaySurvey(response) {
             ? votes.reduce((a, b) => parseInt(a) + parseInt(b), 0) / votes.length / 4
             : 0;
         const positivePercent = (average * 100).toFixed();
-        const negativePercent = ((1 - average) * 100).toFixed();
+        const negativePercent = votes.length ? ((1 - average) * 100).toFixed() : 0;
 
         surveyContent.innerHTML = `
             <div style="display: flex; justify-content: center" class="overview">
                 <div class="stat-box">
-                    <span class="emoji">😀</span>
-                    <h3>${positivePercent}%</h3>
-                </div>
-                <div class="stat-box">
                     <span class="emoji">😧</span>
                     <h3>${negativePercent}%</h3>
+                </div>
+                <div class="stat-box">
+                    <span class="emoji">😀</span>
+                    <h3>${positivePercent}%</h3>
                 </div>
             </div>
             <div class="progress-wrapper">
@@ -304,7 +308,7 @@ function displaySurvey(response) {
                     <div class="progress-fill" style="width: ${positivePercent}%"></div>
                 </div>
             </div>
-            <p>Durchschnitt: ${votes.length ? (votes.reduce((a, b) => parseInt(a) + parseInt(b), 0) / votes.length).toFixed(1) : 0} / 4</p>
+            <p>Durchschnitt: ${votes.length ? formatNumber(votes.reduce((a, b) => parseInt(a) + parseInt(b), 0) / votes.length) : 0} / 4</p>
             <p>Anzahl Stimmen: ${votes.length}</p>
         `;
     } else if (ratingType === "1-10-Points") {
@@ -317,8 +321,8 @@ function displaySurvey(response) {
             <div style="display: flex; justify-content: center; flex-direction: column; align-items: center" class="overview">
                 <div class="stat-box" style="min-width: 150px;">
                     <span class="emoji">📊</span>
-                    <h3>${average.toFixed(1)} / 10</h3>
-                    <small>Durchschnitt</small>
+                    <small style="margin-bottom: 0; margin-top: 1rem;">Durchschnitt:</small>
+                    <h3>${formatNumber(average)} / 10</h3>
                 </div>
             </div>
             <div class="progress-wrapper">
@@ -353,7 +357,7 @@ function displaySurvey(response) {
                 <div class="option-result" style="margin-bottom: 1rem;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
                         <span>${opt}</span>
-                        <span>${count} Stimmen (${percent}%)</span>
+                        <span>${count} ${n("Stimme", count)} (${percent}%)</span>
                     </div>
                     <div class="progress-wrapper">
                         <div class="progress" role="progressbar">
@@ -374,6 +378,10 @@ function displaySurvey(response) {
         // für den unwahrscheinlich fall, dass der typ for some fucking reason nicht existiert
         surveyContent.innerHTML = `<p>Unbekannter Umfragetyp: ${ratingType}</p><p>Stimmen: ${votes.length}</p>`;
     }
+}
+
+function n(string, length) {
+    return length === 1 ? string : string + "n";
 }
 
 function deleteSurvey() {

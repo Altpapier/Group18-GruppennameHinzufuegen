@@ -5,7 +5,7 @@ const dbName = "livefeedback";
 const dbUrl = `http://127.0.0.1:5984/${dbName}/`;
 
 const request = new XMLHttpRequest();
-const notifications = [];
+let notifications = [];
 let liveFeedbackClicked;
 
 const typeToText = {
@@ -77,30 +77,33 @@ function checkSurvey() {
 }
 
 function addNotification(message) {
-    notifications.push({ message: message, time: Date.now() });
+    notifications = [{ message: message, time: Date.now() }];
     displayNotifications();
+    setTimeout(displayNotifications, 7500);
 }
 
 function displayNotifications() {
     const container = document.getElementById("notification-container");
     container.innerHTML = "";
 
-    notifications.forEach((item, index) => {
-        const timeDiff = Date.now() - item.time;
-        const minutes = Math.floor(timeDiff / 60000);
-        const timeString = minutes === 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
+    notifications
+        .filter((n) => Date.now() - n.time < 7500)
+        .forEach((item, index) => {
+            const timeDiff = Date.now() - item.time;
+            const minutes = Math.floor(timeDiff / 60000);
+            const timeString = minutes === 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
 
-        const box = document.createElement("div");
-        box.className = "notification-box";
-        box.innerHTML = `
+            const box = document.createElement("div");
+            box.className = "notification-box";
+            box.innerHTML = `
                 <div class="notification-content">
                     <span class="notification-type">${item.message}</span>
                     <span class="notification-time">${timeString}</span>
                 </div>
                 <button class="close-btn" onclick="removeNotification(${index})">✕</button>
             `;
-        container.appendChild(box);
-    });
+            container.appendChild(box);
+        });
 }
 
 function removeNotification(index) {

@@ -246,6 +246,30 @@ function formatNumber(num, decimals = 1) {
     return Number.isInteger(num) ? num.toString() : num.toFixed(decimals);
 }
 
+function handleShortcut(event) {
+    if (event.key.toLowerCase() === "x") {
+        if (event.shiftKey) {
+            // remove all feedback
+            const container = document.getElementById("notification-container");
+            const boxes = container.querySelectorAll(".notification-box");
+            boxes.forEach((box) => {
+                const timestamp = box.getAttribute("data-timestamp");
+                removeFeedback(parseInt(timestamp));
+            });
+        } else {
+            // remove oldest feedback
+            const container = document.getElementById("notification-container");
+            const firstBox = container.querySelector(".notification-box:last-child");
+            if (firstBox) {
+                const timestamp = firstBox.getAttribute("data-timestamp");
+                removeFeedback(parseInt(timestamp));
+            }
+        }
+    }
+}
+
+document.addEventListener("keydown", handleShortcut);
+
 function displaySurvey(response) {
     console.log(response);
     document.getElementById("survey").style.display = "flex";

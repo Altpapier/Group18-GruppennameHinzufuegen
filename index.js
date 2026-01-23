@@ -17,10 +17,24 @@ const typeToText = {
     silent: "Zu leise, bitte lauter",
 };
 
+let onlineStatus = 0; // 1 = online, 0 = offline
+
 request.onreadystatechange = () => {
     if (request.readyState !== 4) return; // only run when request is done
-    console.log(request);
-    const response = JSON.parse(request.responseText);
+    if (request.status === 0) {
+        onlineStatus = 0;
+    } else {
+        onlineStatus = 1;
+    }
+
+    let response;
+    try {
+        response = request.responseText ? JSON.parse(request.responseText) : {};
+    } catch (e) {
+        console.warn("Could not parse response JSON", e);
+        return;
+    }
+
     if (request.responseURL === dbUrl && request.status === 404 && response.error === "not_found") {
         console.log(`Database ${dbName} not found. Creating...`);
         createDB();
@@ -108,7 +122,26 @@ const intervalOnlineUsers = setInterval(() => {
     get("onlineUsers");
 }, 5000);
 
+let onlineStatusBefore = null;
 function checkSurvey() {
+    if (onlineStatus !== onlineStatusBefore) {
+        const dot = document.getElementById("dot");
+        const statusText = document.getElementById("online-status");
+
+        if (dot && statusText) {
+            if (onlineStatus === 1) {
+                dot.classList.remove("dot-offline");
+                dot.classList.add("dot-online");
+                statusText.textContent = "Online";
+            } else {
+                dot.classList.remove("dot-online");
+                dot.classList.add("dot-offline");
+                statusText.textContent = "Offline";
+            }
+        }
+        onlineStatusBefore = onlineStatus;
+    }
+
     get("showSurvey");
     get("jumpscare");
 }

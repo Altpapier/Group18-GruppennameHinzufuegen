@@ -76,6 +76,31 @@ header {
     align-items: center;
 }
 
+.online-state {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.online-state .dot-online {
+    width: 12px;
+    height: 12px;
+    background-color: var(--select-highlight);
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--select-highlight);
+}
+
+.online-state .dot-offline {
+    width: 12px;
+    height: 12px;
+    background-color: hsl(0, 100%, 64%);
+    border-radius: 50%;
+    box-shadow: 0 0 5px hsl(0, 100%, 64%);
+}
+
 footer {
     margin-top: auto;
     display: flex;
@@ -740,7 +765,7 @@ body.dark .participation-img:not(.dark) {
     position: relative;
     width: 6em;
     height: 3em;
-    margin-left: auto;
+    margin-left: 2rem;
     margin-right: 5em;
     border: solid 1px black;
     border-radius: 1.5em;

@@ -3,14 +3,27 @@ const loginPassword = "mysecretpassword";
 
 const dbName = "livefeedback";
 const dbUrl = `http://127.0.0.1:5984/${dbName}/`;
+let onlineStatus = 0; // 1 = online, 0 = offline
 
 let lastFeedbackData = "";
 let isRemovingFeedback = false;
 const request = new XMLHttpRequest();
 request.onreadystatechange = () => {
     if (request.readyState !== 4) return; // only run when request is done
+    if (request.status === 0) {
+        onlineStatus = 0;
+    } else {
+        onlineStatus = 1;
+    }
 
-    const response = JSON.parse(request.responseText);
+    let response;
+    try {
+        response = request.responseText ? JSON.parse(request.responseText) : {};
+    } catch (e) {
+        console.warn("Could not parse response JSON", e);
+        return;
+    }
+
     if (request.responseURL === dbUrl && request.status === 404 && response.error === "not_found") {
         console.log(`Database ${dbName} not found. Creating...`);
         createDB();
@@ -65,7 +78,25 @@ window.addEventListener("load", async () => {
 
 const interval = setInterval(check, 1000);
 
+let onlineStatusBefore = null;
 function check() {
+    if (onlineStatus !== onlineStatusBefore) {
+        const dot = document.getElementById("dot");
+        const statusText = document.getElementById("online-status");
+
+        if (dot && statusText) {
+            if (onlineStatus === 1) {
+                dot.classList.remove("dot-offline");
+                dot.classList.add("dot-online");
+                statusText.textContent = "Online";
+            } else {
+                dot.classList.remove("dot-online");
+                dot.classList.add("dot-offline");
+                statusText.textContent = "Offline";
+            }
+        }
+        onlineStatusBefore = onlineStatus;
+    }
     get("survey");
     if (!isRemovingFeedback) {
         get("feedback");

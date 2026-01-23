@@ -183,6 +183,10 @@ h1 {
     color: var(--text-light);
 }
 
+h2 {
+    margin-top: 0;
+}
+
 .course-title {
     text-align: center;
 }
@@ -273,7 +277,7 @@ body.dark kbd {
 .field {
     background-color: var(--bg);
     border-radius: 20px;
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     margin-bottom: 1rem;
 }
 

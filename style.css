@@ -36,6 +36,7 @@ body:not(.transition) {
 }
 
 body {
+    display: none;
     margin: 0;
     font-family: system-ui, sans-serif;
     background: var(--bg-dark);

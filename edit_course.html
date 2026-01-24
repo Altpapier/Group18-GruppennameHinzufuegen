@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="de">
     <head>
+        <script type="text/javascript" src="darkMode.js"></script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="style.css" />
@@ -9,22 +10,6 @@
         <script src="courseManager.js"></script>
         <script src="surveyManager.js"></script>
         <script src="editCourse.js"></script>
-        <script>
-            window.onload = function () {
-                if (localStorage.getItem("body-dark") == "true") {
-                    document.body.classList.add("dark");
-                }
-            };
-
-            function toggle() {
-                document.body.classList.add("transition");
-                document.body.classList.toggle("dark");
-                localStorage.setItem(
-                    "body-dark",
-                    document.body.classList.contains("dark") ? "true" : "false",
-                );
-            }
-        </script>
     </head>
     <body>
         <main class="big-main">

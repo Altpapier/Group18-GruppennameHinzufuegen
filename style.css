@@ -20,14 +20,19 @@ body.dark {
     --select-highlight: hsl(145, 81%, 39%);
 }
 
-body *, body {
+body *,
+body {
     box-sizing: border-box;
     text-rendering: optimizeLegibility;
-    transition: background-color 0.5s linear, color 0.5s linear, box-shadow 0.5s linear;
+    transition:
+        background-color 0.5s linear,
+        color 0.5s linear,
+        box-shadow 0.5s linear;
 }
 
-body:not(.transition) *, body:not(.transition) {
-  transition: none !important;
+body:not(.transition) *,
+body:not(.transition) {
+    transition: none !important;
 }
 
 body {
@@ -69,6 +74,31 @@ header {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+}
+
+.online-state {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.online-state .dot-online {
+    width: 12px;
+    height: 12px;
+    background-color: var(--select-highlight);
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--select-highlight);
+}
+
+.online-state .dot-offline {
+    width: 12px;
+    height: 12px;
+    background-color: hsl(0, 100%, 64%);
+    border-radius: 50%;
+    box-shadow: 0 0 5px hsl(0, 100%, 64%);
 }
 
 footer {
@@ -170,6 +200,14 @@ h1 {
     color: var(--text-light);
 }
 
+h2 {
+    margin-top: 0;
+}
+
+.course-title {
+    text-align: center;
+}
+
 form {
     flex: 1;
 }
@@ -180,6 +218,61 @@ form {
     justify-content: center;
     /*align-items: center;*/
     gap: 2rem;
+}
+
+.shortcut-hint {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background: var(--bg-light);
+    border: 2px solid var(--shadow);
+    border-radius: 12px;
+    padding: 1rem;
+    padding-top: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.shortcut-hint:hover {
+    opacity: 1;
+}
+
+.shortcut-hint p {
+    margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .shortcut-hint {
+        display: none;
+    }
+}
+
+kbd {
+    background-color: var(--bg);
+    border: 1px solid var(--shadow);
+    border-radius: 4px;
+    box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.2),
+        0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+    color: var(--text);
+    display: inline-block;
+    font-size: 0.85em;
+    font-weight: 700;
+    line-height: 1;
+    padding: 2px 4px;
+    white-space: nowrap;
+}
+
+body.dark kbd {
+    box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.5),
+        0 2px 0 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.emoji {
+    font-size: 3rem;
 }
 
 .flex_wrap {
@@ -201,7 +294,7 @@ form {
 .field {
     background-color: var(--bg);
     border-radius: 20px;
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     margin-bottom: 1rem;
 }
 
@@ -307,6 +400,12 @@ button.secondary {
     min-width: 180px;
 }
 
+.feedback-clicked {
+    /* make unclickable */
+    pointer-events: none;
+    opacity: 0.6;
+}
+
 .right {
     position: absolute;
     right: 0%;
@@ -347,6 +446,40 @@ label {
     border: 2px solid var(--shadow);
     background: var(--bg-light);
     color: var(--text);
+}
+
+select {
+    background-color: var(--bg-light);
+    background-image: url("./assets/chevron-light.svg");
+    background-repeat: no-repeat;
+    background-position: right 1.5rem center;
+    background-size: 1rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow:
+        -3px -3px 3px 2px var(--highlight),
+        3px 3px 5px 2px var(--shadow),
+        4px 4px 6px var(--shadow);
+    border: none;
+    border-radius: 25px;
+    padding: 1rem 3.5rem 1rem 2rem;
+    min-width: 200px;
+    font-size: 1.25rem;
+    color: var(--text);
+    cursor: pointer;
+}
+
+body.dark select {
+    background-image: url("./assets/chevron-dark.svg");
+}
+
+select:hover {
+    background-color: var(--bg-light);
+    transform: translateY(1px);
+    box-shadow:
+        inset 2px 3px 3px 2px var(--shadow),
+        inset -2px -3px 3px 2px var(--highlight);
 }
 
 input.submit {
@@ -653,58 +786,68 @@ body.dark .participation-img:not(.dark) {
     position: relative;
     width: 6em;
     height: 3em;
-    margin-left: auto;
+    margin-left: 2rem;
     margin-right: 5em;
     border: solid 1px black;
     border-radius: 1.5em;
 }
-#darkmode-toggle  div.big {
+#darkmode-toggle div.big {
     position: absolute;
     height: 2.5em;
     width: 2.5em;
     border-radius: 100%;
     transform: translateY(0.2em);
-    transition: left 0.5s ease-in-out, box-shadow 0.5s linear;
+    transition:
+        left 0.5s ease-in-out,
+        box-shadow 0.5s linear;
 }
 
-#darkmode-toggle  div.big div {
+#darkmode-toggle div.big div {
     position: absolute;
     background-color: white;
     height: 0.1em;
     width: 0.1em;
     box-shadow: 0 0 0.4em inset grey;
     border-radius: 100%;
-    transition: opacity 0.5s linear, height 0.5s linear, width 0.5s linear;
+    transition:
+        opacity 0.5s linear,
+        height 0.5s linear,
+        width 0.5s linear;
 }
 
-body:not(.dark) #darkmode-toggle  div.big div {
+body:not(.dark) #darkmode-toggle div.big div {
     opacity: 0%;
 }
 
-body.dark #darkmode-toggle  div.big div {
+body.dark #darkmode-toggle div.big div {
     opacity: 100%;
     height: 0.5em;
     width: 0.5em;
 }
 
-#darkmode-toggle  div.big div:nth-of-type(1) {
+#darkmode-toggle div.big div:nth-of-type(1) {
     left: 40%;
     top: 10%;
 }
-#darkmode-toggle  div.big div:nth-of-type(2) {
+#darkmode-toggle div.big div:nth-of-type(2) {
     left: 10%;
     top: 40%;
 }
-#darkmode-toggle  div.big div:nth-of-type(3) {
+#darkmode-toggle div.big div:nth-of-type(3) {
     left: 50%;
     top: 60%;
 }
 
-#darkmode-toggle  div.small {
+#darkmode-toggle div.small {
     position: absolute;
     background-color: white;
     border-radius: 100%;
-    transition: height 0.5s ease-in-out, width 0.5s ease-in-out, right 0.5s linear, top 0.5s linear, box-shadow 0.5s ease-in;
+    transition:
+        height 0.5s ease-in-out,
+        width 0.5s ease-in-out,
+        right 0.5s linear,
+        top 0.5s linear,
+        box-shadow 0.5s ease-in;
 }
 
 body:not(.dark) div.small {
@@ -744,7 +887,6 @@ body.dark #darkmode-toggle div.small:nth-of-type(4) {
     top: 60%;
 }
 
-
 body:not(.dark) #darkmode-toggle {
     background-color: lightskyblue;
 }
@@ -763,4 +905,32 @@ body.dark #darkmode-toggle div.big {
     left: 3.2em;
     background-color: white;
     border: solid 0.1em lightgrey;
+}
+
+#fullscreen-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#fullscreen-overlay.hidden {
+    display: none;
+}
+
+#fullscreen-overlay img {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+}
+
+.full-img {
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+    min-width: 100%;
 }

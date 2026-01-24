@@ -23,7 +23,9 @@
     </head>
     <body>
         <header>
-            <img src="assets/titel_logo_neu.png" alt="logo" />
+            <a href="kurse_lecturer.html" class="logo">
+                <img src="assets/titel_logo_neu.png" alt="logo" />
+            </a>
             <div id="darkmode-toggle" class="light" onClick="toggle();">
                 <div class="big">
                     <div></div>
@@ -48,15 +50,30 @@
                     placeholder="Kursname eingeben"
                     required
                 />
-                <label for="course_date">Start Datum</label>
-                <input
-                    type="date"
-                    name="course_date"
-                    id="course_date"
-                    class="textinput course-text"
-                    placeholder="Kursdatum eingeben"
-                    required
-                />
+                <div class="flex_wrap">
+                    <div style="flex: 1;">
+                        <label for="course_date">Start Datum</label>
+                        <input
+                            type="date"
+                            name="course_date"
+                            id="course_date"
+                            class="textinput course-text"
+                            placeholder="Kursdatum eingeben"
+                            required
+                        />
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="course_date">End Datum</label>
+                        <input
+                            type="date"
+                            name="course_date"
+                            id="course_date"
+                            class="textinput course-text"
+                            placeholder="Kursdatum eingeben"
+                        />
+                    </div>
+                </div>
+                
 
                 <footer class="page-footer">
                     <a class="button" href="kurse_lecturer.html">Abbrechen</a>

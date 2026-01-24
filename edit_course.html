@@ -1,32 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
-        <link rel="icon" href="assets/icon_neu.png">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="icon" href="assets/icon_neu.png" />
         <title>Kurs editieren</title>
         <script src="courseManager.js"></script>
         <script src="surveyManager.js"></script>
         <script src="editCourse.js"></script>
         <script>
-            window.onload = function() {
+            window.onload = function () {
                 if (localStorage.getItem("body-dark") == "true") {
                     document.body.classList.add("dark");
                 }
             };
-            
+
             function toggle() {
                 document.body.classList.add("transition");
                 document.body.classList.toggle("dark");
-                localStorage.setItem("body-dark", document.body.classList.contains("dark")? "true":"false");
+                localStorage.setItem(
+                    "body-dark",
+                    document.body.classList.contains("dark") ? "true" : "false",
+                );
             }
         </script>
     </head>
     <body>
         <main class="big-main">
             <header>
-                <img src="assets/titel_logo_neu.png" alt="logo">
+                <a href="kurse_lecturer.html" class="logo">
+                    <img src="assets/titel_logo_neu.png" alt="logo" />
+                </a>
                 <div id="darkmode-toggle" class="light" onClick="toggle();">
                     <div class="big">
                         <div></div>
@@ -36,55 +41,115 @@
                     <div class="small"></div>
                     <div class="small"></div>
                     <div class="small"></div>
-
                 </div>
             </header>
 
             <h1 id="courseTitle">EINSTELLUNGEN</h1>
             <div class="flex_wrap">
-                <div style="flex:1; padding: 1rem;"> 
-                    <div style="padding-right: 2em;">
-                        <label style="font-size: 1.4rem;margin-bottom: 1em;">Vorhandene Umfragen</label>
-                        <div id="surveysContainer" style="display: flex; flex-direction: column; gap: 10px;">
-                        </div>
+                <div style="flex: 1; padding: 1rem">
+                    <div style="padding-right: 2em">
+                        <label style="font-size: 1.4rem; margin-bottom: 1em"
+                            >Vorhandene Umfragen</label
+                        >
+                        <div
+                            id="surveysContainer"
+                            style="display: flex; flex-direction: column; gap: 10px"
+                        ></div>
                     </div>
-                    <div style="display:flex; margin: 1em 0 1em 0; margin-left: auto; align-items: flex-start;">
-                        <a class="button" id="createSurveyBtn" href="create_survey.html">Umfrage Erstellen</a>
+                    <div
+                        style="
+                            display: flex;
+                            margin: 1em 0 1em 0;
+                            margin-left: auto;
+                            align-items: flex-start;
+                        "
+                    >
+                        <a class="button" id="createSurveyBtn" href="create_survey.html"
+                            >Umfrage Erstellen</a
+                        >
                     </div>
                 </div>
 
-                <div style="flex:1; padding: 1rem;">
-                    <h2>Live-Auswahlmöglichkeiten der Studenten auswählen</h2>
-                    <div style="flex-direction: column; display: flex; width: 100%; gap: 0.25rem;">
-                        <div style="display: flex; gap: 1rem;">
-                            <input type="checkbox" id="Verstaendnisproblem" name="enable_survey_choice">
+                <div style="flex: 1; padding: 1rem">
+                    <h2 style="margin-bottom: 0">
+                        Live-Auswahlmöglichkeiten der Studenten auswählen
+                    </h2>
+                    <p>
+                        Dies sind die Knöpfe, welche die Studenten nutzen können, um Ihnen
+                        Live-Feedback zu geben.
+                    </p>
+                    <div style="flex-direction: column; display: flex; width: 100%; gap: 0.25rem">
+                        <div style="display: flex; gap: 1rem">
+                            <input
+                                type="checkbox"
+                                id="Verstaendnisproblem"
+                                name="enable_survey_choice"
+                                checked
+                            />
                             <label for="Verstaendnisproblem">Verständnisproblem / Verstanden</label>
                         </div>
-                        <div style="display: flex; gap: 1rem;" class="">
-                            <input type="checkbox" id="Bitte_schneller" name="enable_survey_choice">
+                        <div style="display: flex; gap: 1rem" class="">
+                            <input
+                                type="checkbox"
+                                id="Bitte_schneller"
+                                name="enable_survey_choice"
+                                checked
+                            />
                             <label for="Bitte_schneller">Zu schnell / langsam</label>
                         </div>
-                        <div style="display: flex; gap: 1rem;">
-                            <input type="checkbox" id="too_quiet/loud" name="enable_survey_choice">
+                        <div style="display: flex; gap: 1rem">
+                            <input
+                                type="checkbox"
+                                id="too_quiet/loud"
+                                name="enable_survey_choice"
+                                checked
+                            />
                             <label for="Pause">Zu leise / laut</label>
                         </div>
-                        <div style="display: flex; gap: 1rem;">
-                            <input type="checkbox" id="not_readable" name="enable_survey_choice">
+                        <div style="display: flex; gap: 1rem">
+                            <input type="checkbox" id="not_readable" name="enable_survey_choice" />
                             <label for="Pause">Nicht lesbar</label>
                         </div>
-                        <div id="custom_area" style="display:flex; flex: 1 1 100%; flex-direction: column; gap:0.5rem;">
-                            <div id="custom_options_container" style="display:flex; flex-direction:column; gap:0.5rem;" class="vertical-flex">
-                            </div>
-                            <div style="margin: 1rem auto; display:flex; gap:12px;">
-                                <button type="button" style="height:1em; min-width: 1em;" id="add_option_btn" class="icon-btn button">+</button>
-                                <button type="button" style="height:1em; min-width: 1em;" id="remove_option_btn" class="icon-btn">-</button>
+                        <div
+                            id="custom_area"
+                            style="
+                                display: flex;
+                                flex: 1 1 100%;
+                                flex-direction: column;
+                                gap: 0.5rem;
+                            "
+                        >
+                            <div
+                                id="custom_options_container"
+                                style="display: flex; flex-direction: column; gap: 0.5rem"
+                                class="vertical-flex"
+                            ></div>
+                            <div style="margin: 1rem auto; display: flex; gap: 12px">
+                                <button
+                                    type="button"
+                                    style="height: 1em; min-width: 1em"
+                                    id="add_option_btn"
+                                    class="icon-btn button"
+                                >
+                                    +
+                                </button>
+                                <button
+                                    type="button"
+                                    style="height: 1em; min-width: 1em"
+                                    id="remove_option_btn"
+                                    class="icon-btn"
+                                >
+                                    -
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <footer class="page-footer">
-                <a class="button" href="kurse_lecturer.html" id="create_survey">Speichern & Verlassen</a>
+                <a class="button" href="kurse_lecturer.html" id="create_survey"
+                    >Speichern & Verlassen</a
+                >
                 <a class="button" href="kurse_lecturer.html">Abbrechen</a>
             </footer>
         </main>

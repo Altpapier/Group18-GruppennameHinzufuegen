@@ -5,7 +5,7 @@ const dbName = "livefeedback";
 const dbUrl = `http://127.0.0.1:5984/${dbName}/`;
 
 const request = new XMLHttpRequest();
-const notifications = [];
+let notifications = [];
 let liveFeedbackClicked;
 
 const typeToText = {
@@ -17,16 +17,33 @@ const typeToText = {
     silent: "Zu leise, bitte lauter",
 };
 
+let onlineStatus = 0; // 1 = online, 0 = offline
+
 request.onreadystatechange = () => {
     if (request.readyState !== 4) return; // only run when request is done
-    console.log(request);
-    const response = JSON.parse(request.responseText);
+    if (request.status === 0) {
+        onlineStatus = 0;
+    } else {
+        onlineStatus = 1;
+    }
+
+    let response;
+    try {
+        response = request.responseText ? JSON.parse(request.responseText) : {};
+    } catch (e) {
+        console.warn("Could not parse response JSON", e);
+        return;
+    }
+
     if (request.responseURL === dbUrl && request.status === 404 && response.error === "not_found") {
         console.log(`Database ${dbName} not found. Creating...`);
         createDB();
     } else if (request.status === 200 && request.responseURL === dbUrl + "feedback") {
         const response = JSON.parse(request.responseText);
         handleSubmitLiveFeedback(response);
+    } else if (request.status === 200 && request.responseURL === dbUrl + "jumpscare") {
+        const response = JSON.parse(request.responseText);
+        jumpscareHandler(response);
     } else if (request.status === 200 && request.responseURL === dbUrl + "onlineUsers") {
         const response = JSON.parse(request.responseText);
         handleOnlineUsers(response);
@@ -55,6 +72,39 @@ request.onreadystatechange = () => {
     }
 };
 
+const FLACKER_DURATION = 100; // 0.1 seconds
+
+let jumpscareBeingHandled = false;
+function jumpscareHandler(response) {
+    let JUMPSCARE_DURATION = 3 * 1000; // default 3 seconds
+    if (response.audio === "hamster") JUMPSCARE_DURATION = 10 * 1000; // 10 seconds for hamster sound
+    const showFor = response.createdAt + JUMPSCARE_DURATION - Date.now();
+    if (showFor <= 0 || jumpscareBeingHandled) return;
+    jumpscareBeingHandled = true;
+    document.getElementById("jumpscare-image").src = `assets/${response.type}.jpg`;
+    setTimeout(() => {
+        document.getElementById("jumpscare-image").src = `assets/${response.type}-flacker.jpg`;
+    }, FLACKER_DURATION);
+    document.getElementById("fullscreen-overlay").classList.toggle("hidden");
+
+    const audio = new Audio(`assets/${response.audio}.mp3`);
+    audio.play();
+
+    const interval = setInterval(() => {
+        document.getElementById("jumpscare-image").src = `assets/${response.type}.jpg`;
+        setTimeout(() => {
+            document.getElementById("jumpscare-image").src = `assets/${response.type}-flacker.jpg`;
+        }, FLACKER_DURATION);
+    }, 2 * FLACKER_DURATION);
+
+    setTimeout(() => {
+        document.getElementById("jumpscare-image").src = "";
+        document.getElementById("fullscreen-overlay").classList.toggle("hidden");
+        jumpscareBeingHandled = false;
+        clearInterval(interval);
+    }, showFor);
+}
+
 let sessionKey = null;
 window.addEventListener("load", async () => {
     get();
@@ -72,35 +122,58 @@ const intervalOnlineUsers = setInterval(() => {
     get("onlineUsers");
 }, 5000);
 
+let onlineStatusBefore = null;
 function checkSurvey() {
+    if (onlineStatus !== onlineStatusBefore) {
+        const dot = document.getElementById("dot");
+        const statusText = document.getElementById("online-status");
+
+        if (dot && statusText) {
+            if (onlineStatus === 1) {
+                dot.classList.remove("dot-offline");
+                dot.classList.add("dot-online");
+                statusText.textContent = "Online";
+            } else {
+                dot.classList.remove("dot-online");
+                dot.classList.add("dot-offline");
+                statusText.textContent = "Offline";
+            }
+        }
+        onlineStatusBefore = onlineStatus;
+    }
+
     get("showSurvey");
+    get("jumpscare");
 }
 
 function addNotification(message) {
-    notifications.push({ message: message, time: Date.now() });
+    notifications = [{ message: message, time: Date.now() }];
     displayNotifications();
+    setTimeout(displayNotifications, 7500);
 }
 
 function displayNotifications() {
     const container = document.getElementById("notification-container");
     container.innerHTML = "";
 
-    notifications.forEach((item, index) => {
-        const timeDiff = Date.now() - item.time;
-        const minutes = Math.floor(timeDiff / 60000);
-        const timeString = minutes === 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
+    notifications
+        .filter((n) => Date.now() - n.time < 7500)
+        .forEach((item, index) => {
+            const timeDiff = Date.now() - item.time;
+            const minutes = Math.floor(timeDiff / 60000);
+            const timeString = minutes === 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
 
-        const box = document.createElement("div");
-        box.className = "notification-box";
-        box.innerHTML = `
+            const box = document.createElement("div");
+            box.className = "notification-box";
+            box.innerHTML = `
                 <div class="notification-content">
                     <span class="notification-type">${item.message}</span>
                     <span class="notification-time">${timeString}</span>
                 </div>
                 <button class="close-btn" onclick="removeNotification(${index})">✕</button>
             `;
-        container.appendChild(box);
-    });
+            container.appendChild(box);
+        });
 }
 
 function removeNotification(index) {
@@ -154,6 +227,14 @@ function set(name, type) {
     request.withCredentials = true;
     request.send();
     liveFeedbackClicked = type;
+    if (type) {
+        // set button to not clickable for 7.5 seconds
+        document.getElementById(type).classList.add("feedback-clicked");
+        console.log("Button clicked:", name);
+        setTimeout(() => {
+            document.getElementById(type).classList.remove("feedback-clicked");
+        }, 7500);
+    }
 }
 
 function createDB() {

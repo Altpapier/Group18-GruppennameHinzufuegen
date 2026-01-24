@@ -3,14 +3,27 @@ const loginPassword = "mysecretpassword";
 
 const dbName = "livefeedback";
 const dbUrl = `http://127.0.0.1:5984/${dbName}/`;
+let onlineStatus = 0; // 1 = online, 0 = offline
 
 let lastFeedbackData = "";
 let isRemovingFeedback = false;
 const request = new XMLHttpRequest();
 request.onreadystatechange = () => {
     if (request.readyState !== 4) return; // only run when request is done
+    if (request.status === 0) {
+        onlineStatus = 0;
+    } else {
+        onlineStatus = 1;
+    }
 
-    const response = JSON.parse(request.responseText);
+    let response;
+    try {
+        response = request.responseText ? JSON.parse(request.responseText) : {};
+    } catch (e) {
+        console.warn("Could not parse response JSON", e);
+        return;
+    }
+
     if (request.responseURL === dbUrl && request.status === 404 && response.error === "not_found") {
         console.log(`Database ${dbName} not found. Creating...`);
         createDB();
@@ -53,18 +66,92 @@ function beenden() {
     window.location.href = `summary_lecturer.html?courseId=${courseId}`;
 }
 
+const startTime = Date.now();
+let showSessionStarted = true;
+let sessionStartedChanged = false;
 window.addEventListener("load", async () => {
     get();
+    setTimeout(() => {
+        showSessionStarted = false;
+    }, 10000);
 });
 
 const interval = setInterval(check, 1000);
 
+let onlineStatusBefore = null;
 function check() {
+    if (onlineStatus !== onlineStatusBefore) {
+        const dot = document.getElementById("dot");
+        const statusText = document.getElementById("online-status");
+
+        if (dot && statusText) {
+            if (onlineStatus === 1) {
+                dot.classList.remove("dot-offline");
+                dot.classList.add("dot-online");
+                statusText.textContent = "Online";
+            } else {
+                dot.classList.remove("dot-online");
+                dot.classList.add("dot-offline");
+                statusText.textContent = "Offline";
+            }
+        }
+        onlineStatusBefore = onlineStatus;
+    }
     get("survey");
     if (!isRemovingFeedback) {
         get("feedback");
     }
     get("onlineUsers");
+}
+
+function sendJumpscare() {
+    const checkReq = new XMLHttpRequest();
+    checkReq.open("GET", dbUrl + "jumpscare", false);
+    checkReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
+    checkReq.send();
+
+    if (checkReq.status === 200) {
+        deleteJumpscare();
+        sendJumpscare();
+        return;
+    }
+
+    const jumpscareDoc = {
+        createdAt: Date.now(),
+        type: document.getElementById("jumpscare-type").value,
+        audio: document.getElementById("jumpscare-audio").value,
+    };
+
+    const createReq = new XMLHttpRequest();
+    createReq.open("PUT", dbUrl + "jumpscare", false);
+    createReq.setRequestHeader("Content-type", "application/json");
+    createReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
+    createReq.send(JSON.stringify(jumpscareDoc));
+
+    hideJumpscarePopup();
+}
+
+function deleteJumpscare() {
+    const getReq = new XMLHttpRequest();
+    getReq.open("GET", dbUrl + "jumpscare", false);
+    getReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
+    getReq.send();
+
+    if (getReq.status !== 200) return;
+
+    const response = JSON.parse(getReq.responseText);
+    const req = new XMLHttpRequest();
+    req.open("DELETE", dbUrl + "jumpscare?rev=" + response._rev, false);
+    req.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
+    req.send();
+}
+
+function displayJumpscarePopup() {
+    document.getElementById("jumpscare-popup").style.display = "flex";
+}
+
+function hideJumpscarePopup() {
+    document.getElementById("jumpscare-popup").style.display = "none";
 }
 
 function displayPopup() {
@@ -90,8 +177,9 @@ function displayFeedback(response) {
     const feedbackList = response.feedback || [];
     const feedbackIds = feedbackList.map((item) => item.time).join(",");
 
-    if (feedbackIds !== lastFeedbackData) {
+    if (feedbackIds !== lastFeedbackData || (!sessionStartedChanged && !showSessionStarted)) {
         lastFeedbackData = feedbackIds;
+        if (!showSessionStarted) sessionStartedChanged = true;
         renderFeedbackList(feedbackList);
     } else {
         updateFeedbackTimes(feedbackList);
@@ -102,7 +190,15 @@ function renderFeedbackList(feedbackList) {
     const container = document.getElementById("notification-container");
     container.innerHTML = "";
 
-    [...feedbackList].reverse().forEach((item) => {
+    const list = [...feedbackList];
+    if (showSessionStarted) {
+        list.push({
+            type: "Sitzung gestartet",
+            time: startTime,
+        });
+    }
+
+    list.reverse().forEach((item) => {
         const timeDiff = Date.now() - item.time;
         const minutes = Math.floor(timeDiff / 60000);
         const timeString = minutes <= 0 ? "jetzt" : `vor ${minutes} ${n("Minute", minutes)}`;
@@ -113,7 +209,7 @@ function renderFeedbackList(feedbackList) {
         box.setAttribute("data-timestamp", item.time);
         box.innerHTML = `
                 <div class="notification-content">
-                    <span class="notification-type">${typeToText[item.type]}</span>
+                    <span class="notification-type">${typeToText[item.type] || item.type}</span>
                     <span class="notification-time">${timeString}</span>
                 </div>
                 <button class="close-btn" onclick="removeFeedback(${item.time})">✕</button>
@@ -227,6 +323,34 @@ function setShowSurvey(value) {
     setShowReq.send(JSON.stringify(showData));
 }
 
+function formatNumber(num, decimals = 1) {
+    return Number.isInteger(num) ? num.toString() : num.toFixed(decimals);
+}
+
+function handleShortcut(event) {
+    if (event.key.toLowerCase() === "x") {
+        if (event.shiftKey) {
+            // remove all feedback
+            const container = document.getElementById("notification-container");
+            const boxes = container.querySelectorAll(".notification-box");
+            boxes.forEach((box) => {
+                const timestamp = box.getAttribute("data-timestamp");
+                removeFeedback(parseInt(timestamp));
+            });
+        } else {
+            // remove oldest feedback
+            const container = document.getElementById("notification-container");
+            const firstBox = container.querySelector(".notification-box:last-child");
+            if (firstBox) {
+                const timestamp = firstBox.getAttribute("data-timestamp");
+                removeFeedback(parseInt(timestamp));
+            }
+        }
+    }
+}
+
+document.addEventListener("keydown", handleShortcut);
+
 function displaySurvey(response) {
     console.log(response);
     document.getElementById("survey").style.display = "flex";
@@ -249,15 +373,15 @@ function displaySurvey(response) {
 
         surveyContent.innerHTML = `
             <div style="display: flex; justify-content: center" class="overview">
+            <div class="stat-box">
+                    <span class="emoji">👎</span>
+                    <h3>${negativePercent}%</h3>
+                    <small>(${negative} Stimmen)</small>
+                </div>
                 <div class="stat-box">
                     <span class="emoji">👍</span>
                     <h3>${positivePercent}%</h3>
                     <small>(${positive} Stimmen)</small>
-                </div>
-                <div class="stat-box">
-                    <span class="emoji">👎</span>
-                    <h3>${negativePercent}%</h3>
-                    <small>(${negative} Stimmen)</small>
                 </div>
             </div>
             <div class="progress-wrapper">
@@ -271,17 +395,17 @@ function displaySurvey(response) {
             ? votes.reduce((a, b) => parseInt(a) + parseInt(b), 0) / votes.length / 4
             : 0;
         const positivePercent = (average * 100).toFixed();
-        const negativePercent = ((1 - average) * 100).toFixed();
+        const negativePercent = votes.length ? ((1 - average) * 100).toFixed() : 0;
 
         surveyContent.innerHTML = `
             <div style="display: flex; justify-content: center" class="overview">
                 <div class="stat-box">
-                    <span class="emoji">😀</span>
-                    <h3>${positivePercent}%</h3>
-                </div>
-                <div class="stat-box">
                     <span class="emoji">😧</span>
                     <h3>${negativePercent}%</h3>
+                </div>
+                <div class="stat-box">
+                    <span class="emoji">😀</span>
+                    <h3>${positivePercent}%</h3>
                 </div>
             </div>
             <div class="progress-wrapper">
@@ -289,7 +413,7 @@ function displaySurvey(response) {
                     <div class="progress-fill" style="width: ${positivePercent}%"></div>
                 </div>
             </div>
-            <p>Durchschnitt: ${votes.length ? (votes.reduce((a, b) => parseInt(a) + parseInt(b), 0) / votes.length).toFixed(1) : 0} / 4</p>
+            <p>Durchschnitt: ${votes.length ? formatNumber(votes.reduce((a, b) => parseInt(a) + parseInt(b), 0) / votes.length) : 0} / 4</p>
             <p>Anzahl Stimmen: ${votes.length}</p>
         `;
     } else if (ratingType === "1-10-Points") {
@@ -302,8 +426,8 @@ function displaySurvey(response) {
             <div style="display: flex; justify-content: center; flex-direction: column; align-items: center" class="overview">
                 <div class="stat-box" style="min-width: 150px;">
                     <span class="emoji">📊</span>
-                    <h3>${average.toFixed(1)} / 10</h3>
-                    <small>Durchschnitt</small>
+                    <small style="margin-bottom: 0; margin-top: 1rem;">Durchschnitt:</small>
+                    <h3>${formatNumber(average)} / 10</h3>
                 </div>
             </div>
             <div class="progress-wrapper">
@@ -338,7 +462,7 @@ function displaySurvey(response) {
                 <div class="option-result" style="margin-bottom: 1rem;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
                         <span>${opt}</span>
-                        <span>${count} Stimmen (${percent}%)</span>
+                        <span>${count} ${n("Stimme", count)} (${percent}%)</span>
                     </div>
                     <div class="progress-wrapper">
                         <div class="progress" role="progressbar">
@@ -359,6 +483,10 @@ function displaySurvey(response) {
         // für den unwahrscheinlich fall, dass der typ for some fucking reason nicht existiert
         surveyContent.innerHTML = `<p>Unbekannter Umfragetyp: ${ratingType}</p><p>Stimmen: ${votes.length}</p>`;
     }
+}
+
+function n(string, length) {
+    return length === 1 ? string : string + "n";
 }
 
 function deleteSurvey() {

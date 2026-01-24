@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
     <head>
         <meta charset="UTF-8" />
@@ -8,16 +8,19 @@
         <title>Student Overview</title>
         <script src="courseManager.js"></script>
         <script>
-            window.onload = function() {
+            window.onload = function () {
                 if (localStorage.getItem("body-dark") == "true") {
                     document.body.classList.add("dark");
                 }
             };
-            
+
             function toggle() {
                 document.body.classList.add("transition");
                 document.body.classList.toggle("dark");
-                localStorage.setItem("body-dark", document.body.classList.contains("dark")? "true":"false");
+                localStorage.setItem(
+                    "body-dark",
+                    document.body.classList.contains("dark") ? "true" : "false",
+                );
             }
         </script>
     </head>
@@ -35,11 +38,13 @@
                 <div class="small"></div>
                 <div class="small"></div>
                 <div class="small"></div>
-
             </div>
         </header>
         <main class="small-main">
-            <h1 class="course-title" id="courseTitle">Grundlagen der Mensch-Computer-Interaktion</h1>
+            <h1 class="course-title" id="courseTitle">
+                Grundlagen der Mensch-Computer-Interaktion
+            </h1>
+            <h3 class="course-title">Übersicht der letzten Wochen</h3>
             <div class="field">
                 <h2>Woche 1</h2>
                 <p><strong>Frage 1:</strong> Wie ist das heutige T-shirt?</p>
@@ -76,17 +81,17 @@
             // Dynamischen Kursnamen laden
             function loadCourseName() {
                 const params = new URLSearchParams(window.location.search);
-                const courseId = parseInt(params.get('courseId'));
-                
+                const courseId = parseInt(params.get("courseId"));
+
                 if (courseId) {
                     const course = courseManager.getCourseById(courseId);
                     if (course) {
-                        document.getElementById('courseTitle').textContent = course.name;
+                        document.getElementById("courseTitle").textContent = course.name;
                     }
                 }
             }
 
-            document.addEventListener('DOMContentLoaded', loadCourseName);
+            document.addEventListener("DOMContentLoaded", loadCourseName);
         </script>
     </body>
 </html>

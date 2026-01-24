@@ -132,10 +132,24 @@
                 </div>
             </div>
             <footer class="page-footer">
-                <a class="button" href="kurse_lecturer.html" id="create_survey"
-                    >Speichern & Verlassen</a
+                <a
+                    class="button"
+                    id="create_survey"
+                    onclick="
+                        let courseId = new URLSearchParams(window.location.search).get('courseId');
+                        window.location.href = `/summary_lecturer.html?courseId=${courseId}`;
+                    "
+                    >Speichern &amp; Verlassen</a
                 >
-                <a class="button" href="kurse_lecturer.html">Abbrechen</a>
+                <a
+                    class="button"
+                    href="kurse_lecturer.html"
+                    onclick="
+                        courseId = new URLSearchParams(window.location.search).get('courseId');
+                        window.location.href = `/summary_lecturer.html?courseId=${courseId}`;
+                    "
+                    >Abbrechen</a
+                >
             </footer>
         </main>
     </body>

@@ -77,6 +77,14 @@ header {
     align-items: center;
 }
 
+.right-container {
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: 0;
+}
+
 .online-state {
     margin-left: auto;
     display: flex;

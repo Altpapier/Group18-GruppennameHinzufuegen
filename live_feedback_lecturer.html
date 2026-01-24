@@ -20,6 +20,14 @@
                 document.body.classList.toggle("dark");
                 localStorage.setItem("body-dark", document.body.classList.contains("dark")? "true":"false");
             }
+
+            function overlayPopup(elem) {
+                if (elem.classList.contains("popup")) {
+                    elem.classList.remove("popup");
+                } else {
+                    elem.classList.add("popup");
+                }
+            }
         </script>
     </head>
     <body>
@@ -60,6 +68,12 @@
                         Umfrage starten
                     </button>
                 </div>
+            </div>
+            <div class="qrcode">
+                <img src="assets/qr.png" onclick="overlayPopup(this)" />
+                <a class="button" id="export" href="assets/qr.png" download="qr.png">
+                    QR-Code<br />exportieren
+                </a>
             </div>
             <div
                 class="flex"

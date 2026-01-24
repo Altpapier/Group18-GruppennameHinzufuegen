@@ -94,7 +94,7 @@
             <button style="margin: 1rem;" class="right" onclick="goToEditCourse();">Einstellungen</button>
             <footer class="page-footer">
                 <a class="button" href="kurse_lecturer.html">Zurück</a>
-                <a class="button" id="startCourseBtn" href="">Kurs starten</a>
+                <a class="button" id="startCourseBtn" href="live_feedback_lecturer.html">Kurs starten</a>
             </footer>
         </main>
         <script>
@@ -173,8 +173,6 @@
                 
                 if (courseId) {
                     startBtn.href = `live_feedback_lecturer.html?courseId=${courseId}`;
-                } else {
-                    startBtn.href = 'qr.html';
                 }
             });
         </script>

@@ -108,12 +108,6 @@ header img {
     margin: 0 auto;
 }
 
-.qrcode img {
-    width: min(30em, 50vw);
-    margin: 0 auto;
-    margin-right: 1em;
-}
-
 main.student {
     width: min(50rem, 100%);
     align-items: center;
@@ -131,13 +125,36 @@ main.student {
 }
 
 div.qrcode {
+    position: absolute;
+    margin-top: 1em;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     width: min-content;
-    margin: auto;
+    flex-flow: column;
 }
 
-div.qrcode button {
+div.qrcode img {
+    width: min(20em, 30vw);
+    margin: 0 auto;
+    margin-right: 1em;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+div.qrcode img:hover:not(.popup) {
+    box-shadow: 0 0 0.8em 0.2em hsl(0, 0%, 25%);
+}
+
+div.qrcode img.popup {
+    width: max(40em, 50vw);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+div.qrcode .button {
+    margin: 0.5em auto;
     height: min-content;
 }
 

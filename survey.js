@@ -156,15 +156,15 @@ function submitVote() {
 
     if (ratingType === "custom-multiple") {
         const checkedBoxes = document.querySelectorAll('input[name="vote"]:checked');
-        if (checkedBoxes.length === 0) {
-            addNotification("Bitte mindestens eine Option auswählen!");
+        if (checkedBoxes.length === 0) { // TODO: cancel if none selected
+            hideSurvey();
             return;
         }
         voteValue = Array.from(checkedBoxes).map((cb) => cb.value);
     } else {
         const selectedOption = document.querySelector('input[name="vote"]:checked');
-        if (!selectedOption) {
-            addNotification("Keine Option ausgewählt!");
+        if (!selectedOption) { // TODO: cancel if none selected
+            hideSurvey();
             return;
         }
         voteValue = selectedOption.value;
@@ -190,24 +190,28 @@ function submitVote() {
 
         addNotification("Feedback übermittelt!");
 
-        const showReq = new XMLHttpRequest();
-        showReq.open("GET", dbUrl + "showSurvey", false);
-        showReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
-        showReq.send();
-        if (showReq.status === 200) {
-            const doc = JSON.parse(showReq.responseText);
-            doc.value = false;
-            const putReq = new XMLHttpRequest();
-            putReq.open("PUT", dbUrl + "showSurvey", true);
-            putReq.setRequestHeader("Content-type", "application/json");
-            putReq.setRequestHeader(
-                "Authorization",
-                "Basic " + btoa(loginName + ":" + loginPassword),
-            );
-            putReq.send(JSON.stringify(doc));
-        }
+        hideSurvey();
     } else {
         addNotification("Fehler beim Speichern!");
+    }
+}
+
+function hideSurvey() {
+    const showReq = new XMLHttpRequest();
+    showReq.open("GET", dbUrl + "showSurvey", false);
+    showReq.setRequestHeader("Authorization", "Basic " + btoa(loginName + ":" + loginPassword));
+    showReq.send();
+    if (showReq.status === 200) {
+        const doc = JSON.parse(showReq.responseText);
+        doc.value = false;
+        const putReq = new XMLHttpRequest();
+        putReq.open("PUT", dbUrl + "showSurvey", true);
+        putReq.setRequestHeader("Content-type", "application/json");
+        putReq.setRequestHeader(
+            "Authorization",
+            "Basic " + btoa(loginName + ":" + loginPassword),
+        );
+        putReq.send(JSON.stringify(doc));
     }
 }
 

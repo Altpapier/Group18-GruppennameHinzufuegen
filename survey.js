@@ -156,14 +156,16 @@ function submitVote() {
 
     if (ratingType === "custom-multiple") {
         const checkedBoxes = document.querySelectorAll('input[name="vote"]:checked');
-        if (checkedBoxes.length === 0) { // TODO: cancel if none selected
+        if (checkedBoxes.length === 0) {
+            addNotification("Antwort abgebrochen!");
             hideSurvey();
             return;
         }
         voteValue = Array.from(checkedBoxes).map((cb) => cb.value);
     } else {
         const selectedOption = document.querySelector('input[name="vote"]:checked');
-        if (!selectedOption) { // TODO: cancel if none selected
+        if (!selectedOption) {
+            addNotification("Antwort abgebrochen!");
             hideSurvey();
             return;
         }

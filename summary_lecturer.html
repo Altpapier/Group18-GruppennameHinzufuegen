@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
     <head>
         <script type="text/javascript" src="darkMode.js"></script>
@@ -8,6 +8,7 @@
         <link rel="icon" href="assets/icon_neu.png" />
         <title>Lecturer Overview</title>
         <script src="courseManager.js"></script>
+        <script src="surveyManager.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
     </head>
     <body>
@@ -25,14 +26,15 @@
                     <div class="small"></div>
                     <div class="small"></div>
                     <div class="small"></div>
-    
                 </div>
             </div>
         </header>
         <main>
-            <h1 class="course-title" id="courseTitle">Grundlagen der Mensch-Computer-Interaktion</h1>
+            <h1 class="course-title" id="courseTitle">
+                Grundlagen der Mensch-Computer-Interaktion
+            </h1>
             <div class="flex_wrap">
-                <div style="overflow-x: scroll; flex: 1;">
+                <div style="overflow-x: scroll; flex: 1">
                     <h2>Übersicht der Letzten Wochen:</h2>
                     <div class="field">
                         <h2>Woche 1</h2>
@@ -80,14 +82,32 @@
                         </div>
                     </div>
                 </div>
-                <div style="flex: 1;">
+                <div style="flex: 1">
                     <canvas id="myChart"></canvas>
                 </div>
             </div>
-            <button style="margin: 1rem;" class="right" onclick="goToEditCourse();">Einstellungen</button>
+            <button style="margin: 1rem" class="right" onclick="goToEditCourse()">
+                Einstellungen
+            </button>
             <footer class="page-footer">
                 <a class="button" href="kurse_lecturer.html">Zurück zu den Kursen</a>
-                <a class="button" id="startCourseBtn" href="">Live-Session Starten</a>
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem"
+                >
+                    <span
+                        id="survey-hint"
+                        style="
+                            display: none;
+                            font-size: 0.8rem;
+                            font-weight: bold;
+                            max-width: 200px;
+                            text-align: center;
+                        "
+                        >Aktuell sind noch keine Umfragen vorhanden. Erstelle erst Umfragen in den
+                        Einstellungen.</span
+                    >
+                    <a class="button" id="startCourseBtn" href="">Live-Session Starten</a>
+                </div>
             </footer>
         </main>
         <script>
@@ -135,37 +155,42 @@
             // Dynamischen Kursnamen laden
             function loadCourseName() {
                 const params = new URLSearchParams(window.location.search);
-                const courseId = parseInt(params.get('courseId'));
-                
+                const courseId = parseInt(params.get("courseId"));
+
                 if (courseId) {
                     const course = courseManager.getCourseById(courseId);
                     if (course) {
-                        document.getElementById('courseTitle').textContent = course.name;
+                        document.getElementById("courseTitle").textContent = course.name;
                     }
                 } else {
-                    console.log('Keine Course ID in URL gefunden');
+                    console.log("Keine Course ID in URL gefunden");
                 }
             }
 
             function goToEditCourse() {
                 const params = new URLSearchParams(window.location.search);
-                const courseId = params.get('courseId');
+                const courseId = params.get("courseId");
                 if (courseId) {
                     window.location.href = `edit_course.html?courseId=${courseId}`;
                 } else {
-                    window.location.href = 'edit_course.html';
+                    window.location.href = "edit_course.html";
                 }
             }
 
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener("DOMContentLoaded", function () {
                 loadCourseName();
-                
+
                 const params = new URLSearchParams(window.location.search);
-                const courseId = params.get('courseId');
-                const startBtn = document.getElementById('startCourseBtn');
-                
+                const courseId = parseInt(params.get("courseId"));
+                const startBtn = document.getElementById("startCourseBtn");
+
                 if (courseId) {
                     startBtn.href = `live_feedback_lecturer.html?courseId=${courseId}`;
+
+                    const surveys = surveyManager.getSurveysByCourseId(courseId);
+                    if (surveys.length === 0) {
+                        document.getElementById("survey-hint").style.display = "block";
+                    }
                 }
             });
         </script>
